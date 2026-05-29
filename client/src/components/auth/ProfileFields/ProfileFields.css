@@ -1,0 +1,139 @@
+/* עטיפת הדף כולו וקביעת פונט אחיד */
+.profile-fields-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #F7F7F4;
+    font-family: 'Assistant', sans-serif;
+    direction: ltr;
+}
+
+/* כרטיסיית הטופס המוגבלת ברוחב תואם */
+.profile-card-wide {
+    background-color: #FFFFFF;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    max-width: 460px;
+    text-align: center;
+}
+
+.profile-fields-title {
+    color: #222222;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* יישור הטופס והשגיאות לשמאל עבור אנגלית */
+.auth-form-left {
+    text-align: left;
+}
+
+.auth-error-left {
+    background-color: #FDF2F2;
+    color: #DE3B3B;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #FCD4D4;
+    text-align: left;
+}
+
+.input-group-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+/* מיקום האייקון בצד שמאל ללא דריסת הטקסט */
+.input-icon-left {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8C9388;
+    font-size: 18px;
+    left: 12px;
+    right: auto;
+}
+
+/* הגדרות הריפוד הפנימי של שדות הקלט */
+.auth-input-left {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #E2E2DE;
+    border-radius: 12px;
+    font-size: 15px;
+    color: #222222;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.auth-input-left:focus {
+    outline: none;
+    border-color: #557A61;
+}
+
+/* מראה שדה האימייל החסום */
+.disabled-input {
+    background-color: #EAEAEA !important;
+    cursor: not-allowed !important;
+    color: #777777 !important;
+}
+
+/* קבוצת כפתורי הרדיו */
+.radio-container-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #F7F7F4;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #E2E2DE;
+    margin-top: 6px;
+}
+
+.radio-item-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #222222;
+    cursor: pointer;
+}
+
+.radio-item-input {
+    accent-color: #557A61;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.radio-item-input:disabled {
+    cursor: not-allowed;
+}
+
+/* כפתור שליחה מלא */
+.auth-button-full {
+    width: 100%;
+    background-color: #557A61;
+    color: #FFFFFF;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background-color 0.2s;
+}
+
+.auth-button-full:hover {
+    background-color: #43614D;
+}
