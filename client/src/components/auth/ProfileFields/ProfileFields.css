@@ -51,6 +51,12 @@
     text-align: left;
 }
 
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 /* מיקום האייקון בצד שמאל ללא דריסת הטקסט */
 .input-icon-left {
     position: absolute;

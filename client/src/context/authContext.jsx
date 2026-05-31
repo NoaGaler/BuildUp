@@ -1,11 +1,13 @@
 import React, { createContext, useReducer, useContext, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 
 const AuthContext = createContext(null);
 
 const initialState = {
     user: null,
-    tempRegistration: null, // Holds temporary credentials { email, password } between step 1 and step 2
+    tempRegistration: null,
     loading: true,
     error: null,
 };
@@ -29,6 +31,7 @@ const authReducer = (state, action) => {
 
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
+    const navigate = useNavigate();        
 
     // Initial session recovery check on application mount
     useEffect(() => {
@@ -54,6 +57,7 @@ export const AuthProvider = ({ children }) => {
         checkLoggedUser();
     }, []);
 
+
     const loginUser = async (email, password) => {
         dispatch({ type: 'SET_LOADING', payload: true });
         try {
@@ -70,10 +74,23 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    /**
-     * Registration Step 1: Validates email availability. 
-     * If available, saves email and password into global context state.
-     */
+
+    // Check for any draft email in local storage to potentially restore registration progress
+    const checkDraftEmail = () => {
+        return localStorage.getItem('draft_email');
+    };
+
+    const confirmRestore = (emailDraft) => {
+        // If confirmed, update storage/state if needed and go to info step
+        dispatch({ type: 'SET_REGISTRATION_DATA', payload: { email: emailDraft } });
+    };
+
+    const cancelRestore = () => {
+        localStorage.removeItem('draft_email');
+        dispatch({ type: 'SET_REGISTRATION_DATA', payload: null });
+    };
+
+    // Registration Step 1: Validates email availability. 
     const registerStep1 = async (email, password) => {
         dispatch({ type: 'SET_LOADING', payload: true });
 
@@ -81,6 +98,7 @@ export const AuthProvider = ({ children }) => {
             const data = await authService.registerStep1(email, password);
             if (data.success) {
                 // Instantly commit the temporary access values into our context registry
+                localStorage.setItem('draft_email', email);
                 dispatch({ type: 'SET_REGISTRATION_DATA', payload: { email, password } });
                 return { success: true };
             }
@@ -91,15 +109,14 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    /**
-     * Registration Step 2 / Profile Updates: Executes final database transaction parameters.
-     */
+    // Registration Step 2: Profile Updates: Executes final database transaction parameters.
     const registerStep2 = async (userData) => {
         dispatch({ type: 'SET_LOADING', payload: true });
         try {
             const data = await authService.registerStep2(userData);
             if (data.success && data.user) {
                 localStorage.setItem('loggedUserId', data.user.id);
+                localStorage.removeItem('draft_email');
                 dispatch({ type: 'LOGIN_SUCCESS', payload: data.user });
                 return { success: true };
             }
@@ -123,8 +140,11 @@ export const AuthProvider = ({ children }) => {
                 loading: state.loading,
                 error: state.error,
                 loginUser,
-                registerStep1,   // Unified Step 1 Action Hook Handler
-                registerStep2,   // Unified Step 2 Action Hook Handler
+                checkDraftEmail,
+                confirmRestore,
+                cancelRestore,
+                registerStep1,
+                registerStep2,
                 logoutUser
             }}>
             {!state.loading && children}

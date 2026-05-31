@@ -1,5 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+/* src/index.css */
+
+/* הגדרת ברירת מחדל לכל האתר */
 import { AuthProvider } from './context/authContext';
 
 import LoginForm from './components/auth/Login/LoginForm';
@@ -7,6 +10,7 @@ import RegisterForm from './components/auth/register/RegisterForm';
 import ProfileFields from './components/auth/ProfileFields/ProfileFields';
 
 import './App.css';
+import Logo from './components/UI/logo.jsx';
 
 function App() {
   return (
@@ -15,12 +19,7 @@ function App() {
         <div className="App">
           <Routes>
             {/* Home Feed Base */}
-            <Route path="/" element={
-              <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'Assistant' }}>
-                <h2>BuildUp Home Feed (Under Construction)</h2>
-                <p>Project cards and category filters will be rendered here.</p>
-              </div>
-            } />
+            <Route path="/" element={<Logo />} />
 
             {/* Auth Routes */}
             <Route path="/login" element={<LoginForm />} />

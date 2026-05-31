@@ -1,19 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/authContext';
 import { FiMail, FiLock } from 'react-icons/fi';
-import { useNavigate, Link } from 'react-router-dom'; // הוספת הייבוא של Link
+import { useNavigate, Link } from 'react-router-dom';
+import Modal from '../../ui/Modal/Modal';
 import './RegisterForm.css';
 
 const RegisterForm = () => {
-    const { registerStep1, error: globalError } = useAuth();
+
+    const { registerStep1,
+        error: globalError,
+        checkDraftEmail,
+        confirmRestore,
+        cancelRestore
+    } = useAuth();
+
     const navigate = useNavigate();
     const [localError, setLocalError] = useState('');
+    const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
+    const [savedEmail, setSavedEmail] = useState('');
 
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         verifyPassword: ''
     });
+
+    useEffect(() => {
+        // Check local storage directly on mount
+        const draftEmail = checkDraftEmail();
+        if (draftEmail) {
+            setSavedEmail(draftEmail);
+            setIsRestoreModalOpen(true);
+        }
+    }, []);
+
+    const handleConfirmRestore = () => {
+        confirmRestore(savedEmail);
+        setIsRestoreModalOpen(false);
+        navigate('/register/info');
+    };
+
+    const handleCancelRestore = () => {
+        cancelRestore();
+        setIsRestoreModalOpen(false);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,6 +79,17 @@ const RegisterForm = () => {
 
     return (
         <div className="register-fields-wrapper">
+
+            <Modal
+                isOpen={isRestoreModalOpen}
+                title="Resume Registration"
+                message={`We found an incomplete registration session. Would you like to continue?`}
+                confirmText="Continue"
+                cancelText="Start Over"
+                onConfirm={() => handleConfirmRestore()}
+                onCancel={() => handleCancelRestore()}
+            />
+
             <div className="register-card-wide">
                 <h2 className="register-fields-title">Create New Account</h2>
                 <p className="register-fields-subtitle">Step 1 of 2: Account credentials</p>
