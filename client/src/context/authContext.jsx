@@ -31,7 +31,7 @@ const authReducer = (state, action) => {
 
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
-    const navigate = useNavigate();        
+    const navigate = useNavigate();
 
     // Initial session recovery check on application mount
     useEffect(() => {
@@ -93,7 +93,6 @@ export const AuthProvider = ({ children }) => {
     // Registration Step 1: Validates email availability. 
     const registerStep1 = async (email, password) => {
         dispatch({ type: 'SET_LOADING', payload: true });
-
         try {
             const data = await authService.registerStep1(email, password);
             if (data.success) {

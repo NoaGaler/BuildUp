@@ -28,42 +28,51 @@ class UserController {
         }
     }
 
-    // Receives ALL data, re-checks email safety, and inserts everything together
     static async registerStep2(req, res) {
-        const { email, name, role, profile_image_url } = req.body;
-
         try {
+            const { email, password, name, role, phone, profile_image_url, tag_line, bio, city, categoryIds } = req.body;
+
+            // Validation guard to ensure baseline fields are populated
+            if (!email || !password || !name || !role) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Missing mandatory fields for account compilation."
+                });
+            }
+
             // Ensure the email wasn't taken while the user was typing
             const isEmailTaken = await authModel.checkEmailExists(email);
             if (isEmailTaken) {
                 return res.status(400).json({
                     success: false,
-                    message: "Security alert: This email address was captured by another account while you were filling the form."
+                    message: "Security alert: This email address was captured by another account."
                 });
             }
 
-            // Perform the full atomic insertion to the database
-            const userId = await authModel.registerFullUser(req.body);
+            // Execute the atomic multi-table transaction in the model layer
+            const userId = await authModel.registerFullUser({
+                email, password, name, role, phone, profile_image_url, tag_line, bio, city, categoryIds
+            });
 
-            res.status(201).json({
+            return res.status(201).json({
                 success: true,
                 message: "Registration completed and profile created successfully.",
-                user: { 
-                    id: userId, 
-                    name: name, 
-                    role: role, 
-                    profile_image_url: profile_image_url || null 
+                user: {
+                    id: userId,
+                    name,
+                    role,
+                    profile_image_url: profile_image_url || null
                 }
             });
         } catch (error) {
-            res.status(500).json({
+            console.error("Error inside registerStep2 controller node:", error);
+            return res.status(500).json({
                 success: false,
                 message: "Profile compilation and user creation failed.",
                 error: error.message
             });
         }
     }
-
 
     //Login
     static async login(req, res) {
@@ -81,11 +90,11 @@ class UserController {
             res.status(200).json({
                 success: true,
                 message: "Login verified successfully.",
-                user: { 
-                    id: user.id, 
+                user: {
+                    id: user.id,
                     name: user.name,
-                    role: user.role, 
-                    profile_image_url: user.profile_image_url 
+                    role: user.role,
+                    profile_image_url: user.profile_image_url
                 }
             });
         } catch (error) {
@@ -110,11 +119,11 @@ class UserController {
 
             res.status(200).json({
                 isAuthenticated: true,
-                user: { 
-                    id: user.id, 
-                    name: user.name, 
-                    role: user.role, 
-                    profile_image_url: user.profile_image_url 
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    role: user.role,
+                    profile_image_url: user.profile_image_url
                 }
             });
         } catch (error) {

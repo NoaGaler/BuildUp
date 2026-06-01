@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../../context/authContext';
 import { FiMail, FiLock } from 'react-icons/fi';
 import { useNavigate, Link } from 'react-router-dom';
-import Modal from '../../ui/Modal/Modal';
+
+import { useAuth } from '../../../../context/AuthContext.jsx';
+import Modal from '../../../ui/Modal/Modal';
+import Logo from '../../../UI/logo.jsx'
+
 import './RegisterForm.css';
 
-const RegisterForm = () => {
+const RegisterForm = ({ onStepComplete }) => {
 
     const { registerStep1,
         error: globalError,
         checkDraftEmail,
         confirmRestore,
-        cancelRestore
+        cancelRestore,
+        tempRegistration
     } = useAuth();
 
     const navigate = useNavigate();
@@ -28,7 +32,7 @@ const RegisterForm = () => {
     useEffect(() => {
         // Check local storage directly on mount
         const draftEmail = checkDraftEmail();
-        if (draftEmail) {
+        if (draftEmail && !tempRegistration) {
             setSavedEmail(draftEmail);
             setIsRestoreModalOpen(true);
         }
@@ -37,7 +41,7 @@ const RegisterForm = () => {
     const handleConfirmRestore = () => {
         confirmRestore(savedEmail);
         setIsRestoreModalOpen(false);
-        navigate('/register/info');
+        onStepComplete();
     };
 
     const handleCancelRestore = () => {
@@ -66,10 +70,12 @@ const RegisterForm = () => {
             setLocalError('Passwords do not match.');
             return;
         }
-
         const result = await registerStep1(formData.email, formData.password);
+
         if (result.success) {
-            navigate('/register/info');
+            // navigate('/register/info');
+            onStepComplete();
+
         } else {
             setLocalError(result.message || 'Email verification process failed.');
         }
@@ -91,7 +97,7 @@ const RegisterForm = () => {
             />
 
             <div className="register-card-wide">
-                <h2 className="register-fields-title">Create New Account</h2>
+                <h2 className="register-fields-title">Create New Account at <Logo width="120" height="50"></Logo></h2>
                 <p className="register-fields-subtitle">Step 1 of 2: Account credentials</p>
 
                 {activeError && <div className="register-error-left">{activeError}</div>}

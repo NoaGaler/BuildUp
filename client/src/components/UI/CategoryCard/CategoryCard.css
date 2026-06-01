@@ -1,0 +1,37 @@
+.category-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    width: 100px;
+    text-align: center;
+}
+
+.category-card-wrapper:hover {
+    transform: translateY(-3px);
+}
+
+.category-circle-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%; /* Renders a flawless circular layout aspect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.category-selected-active .category-circle-avatar {
+    box-shadow: 0px 4px 12px rgba(85, 122, 97, 0.25); /* Brand shadow depth glow */
+}
+
+.category-display-label {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    transition: color 0.2s ease, font-weight 0.2s ease;
+}

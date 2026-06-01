@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../../context/authContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { FiMail, FiLock } from 'react-icons/fi';
+
+import { useAuth } from '../../../context/AuthContext';
+import Logo from '../../UI/logo.jsx'
+
 import './LoginForm.css';
 
 const LoginForm = () => {
@@ -31,14 +34,15 @@ const LoginForm = () => {
 
     return (
         <div className="login-fields-wrapper">
+
             <div className="login-card-standard">
-                <h2 className="login-fields-title">Welcome to BuildUp</h2>
+                <h2 className="login-fields-title">Welcome to <Logo width="120" height="50"></Logo></h2>
                 <p className="login-fields-subtitle">Log in to discover inspiration and home design professionals</p>
 
                 {activeError && <div className="login-error-left">{activeError}</div>}
 
                 <form onSubmit={handleSubmit} className="login-form-left">
-                    
+
                     {/* Email Input Field */}
                     <div className="login-input-group-left">
                         <label className="login-input-label">Email Address</label>

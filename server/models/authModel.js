@@ -8,43 +8,53 @@ class authModel {
         return rows[0];
     }
 
-    // Full registration insertion: Runs a transaction to save everything safely AT ONCE
-    static async registerFullUser (userData) {
-        const { email, password, name, role, phone, profile_image_url, categoryIds } = userData;
+    static async registerFullUser(userData) {
+        const { email, password, name, role, phone, profile_image_url, tag_line, bio, city, categoryIds } = userData;
         
+        // Establish an isolated connection from the allocation pool to manage the transaction state
         const connection = await pool.getConnection();
+        
         try {
             await connection.beginTransaction();
 
-            // Insert into 'users' table with all data populated
-            const [userResult] = await connection.query(
-                'INSERT INTO users (name, email, role, phone, profile_image_url) VALUES (?, ?, ?, ?, ?)',
-                [name, email, role, phone || null, profile_image_url || null]
-            );
+            // Insert core entity row into 'users' table
+            const userQuery = `
+                INSERT INTO users (name, email, phone, role, profile_image_url, created_at) 
+                VALUES (?, ?, ?, ?, ?, NOW())
+            `;
+            const [userResult] = await connection.query(userQuery, [name, email, phone, role, profile_image_url]);
             const userId = userResult.insertId;
 
-            // Insert into 'password' table
-            await connection.query(
-                'INSERT INTO password (user_id, password) VALUES (?, ?)',
-                [userId, password]
-            );
+            // Insert the raw plain-text password directly into the secure isolation table 'password'
+            const passwordQuery = 'INSERT INTO password (user_id, password) VALUES (?, ?)';
+            await connection.query(passwordQuery, [userId, password]);
 
-            // If professional and has categories, insert into 'professional_categories'
-            if (role === 'professional' && Array.isArray(categoryIds) && categoryIds.length > 0) {
-                const records = categoryIds.map(categoryId => [userId, categoryId]);
-                
-                await connection.query(
-                    'INSERT INTO professional_categories (user_id, category_id) VALUES ?',
-                    [records]
-                );
+            // Conditional profile generation logic for specialized professional roles
+            if (role === 'professional') {
+                const profileQuery = `
+                    INSERT INTO professional_profiles (user_id, tagline, bio, city) 
+                    VALUES (?, ?, ?, ?)
+                `;
+                await connection.query(profileQuery, [userId, tag_line, bio, city]);
+
+                // Bulk insert selected relationship indices into 'professional_categories' mapping table
+                if (categoryIds && categoryIds.length > 0) {
+                    const categoryValues = categoryIds.map(catId => [userId, catId]);
+                    const bulkCategoryQuery = 'INSERT INTO professional_categories (user_id, category_id) VALUES ?';
+                    await connection.query(bulkCategoryQuery, [categoryValues]);
+                }
             }
 
+            // Commit transaction parameters permanently to persistent storage disk rows
             await connection.commit();
             return userId;
+
         } catch (error) {
+            // Rollback execution block parameters to preserve database sanity
             await connection.rollback();
             throw error;
         } finally {
+            // Relinquish operational connection blueprint footprints back to pool allocation
             connection.release();
         }
     }

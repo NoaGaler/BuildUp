@@ -1,0 +1,20 @@
+.categories-flex-container {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+    width: 100%;
+}
+
+.categories-status-msg {
+    color: #60665D;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px;
+    font-weight: 500;
+}
+
+.error-msg {
+    color: #DC2626;
+}
