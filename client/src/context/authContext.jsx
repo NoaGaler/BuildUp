@@ -98,9 +98,7 @@ export const AuthProvider = ({ children }) => {
             if (data.success) {
                 // Instantly commit the temporary access values into our context registry
                 localStorage.setItem('draft_email', email);
-                console.log("registerStep1 2:", state.tempRegistration);
                 dispatch({ type: 'SET_REGISTRATION_DATA', payload: { email, password } });
-                console.log("registerStep1 2:", state.tempRegistration);
                 return { success: true };
             }
         } catch (error) {
