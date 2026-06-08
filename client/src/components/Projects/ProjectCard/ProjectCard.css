@@ -49,10 +49,6 @@
     transition: opacity 0.25s ease;
 }
 
-.project-feed-card:hover .card-media-hover-mask {
-    opacity: 1;
-}
-
 .mask-action-trigger-badge {
     background-color: #FFFFFF;
     color: #222222; /* Charcoal grey primary dark color variant text styling */

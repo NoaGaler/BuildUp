@@ -1,6 +1,5 @@
 import express from 'express';
 import ProjectController from '../controllers/projectController.js';
-//import { create, update } from '../middleware/projectValidation.js';
 import ProjectValidation from '../middleware/projectValidation.js';
 
 const router = express.Router();

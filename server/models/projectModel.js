@@ -5,7 +5,7 @@ class projectModel {
 
     // Get projects with optional filters and sorting
     static async getProjectsFiles(filters) {
-        const { search, category_id, sort, limit } = filters;
+        const { search, category_id, sort, limit, user_favorites_id } = filters;
         const connection = await pool.getConnection();
 
         try {
@@ -28,6 +28,13 @@ class projectModel {
 
             const queryParams = [];
             const whereConditions = [];
+
+            // Dynamic Join: If user_favorites_id is present, filter by favorite_projects table
+            if (user_favorites_id) {
+                query += ` INNER JOIN favorite_projects fp 
+                       ON p.id = fp.project_id AND fp.user_id = ? `;
+                queryParams.push(Number(user_favorites_id));
+            }
 
             // Dynamic Filtering by Category ID
             if (category_id) {

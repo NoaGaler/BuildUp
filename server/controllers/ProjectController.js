@@ -145,8 +145,6 @@ class ProjectController {
         }
     }
 
-
-
     // Delete a project and all its associated media records
     static async deleteProject(req, res) {
         try {
