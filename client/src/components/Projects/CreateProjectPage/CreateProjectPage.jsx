@@ -38,7 +38,7 @@ const CreateProjectPage = () => {
         const createPayload = {
             title: formData.title,
             description: formData.description,
-            category_id: Number(formData.categoryId),
+            category_id: Number(formData.category_id),
             professional_id: Number(user?.id),
             mediaFiles: serverMediaFiles
         };

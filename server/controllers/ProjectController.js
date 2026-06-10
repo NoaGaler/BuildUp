@@ -98,7 +98,6 @@ class ProjectController {
             const projectId = req.params.id;
             const { title, description, mediaFiles } = req.body;
 
-            // 1. שליפת הפרויקט הקיים מה-DB כדי לבדוק את הנתונים הנוכחיים
             const dbProject = await projectModel.getProjectById(projectId);
             if (!dbProject) {
                 return res.status(404).json({
@@ -116,7 +115,7 @@ class ProjectController {
                 if (mediaFiles.cover_image) {
                     const clientCover = mediaFiles.cover_image;
 
-                    if (Number(clientCover.cover_image_id) === Number(dbProject.cover_image_id)) {
+                    if (clientCover.cover_image_URL && Number(clientCover.cover_image_id) === Number(dbProject.cover_image_id)) {
                         await projectModel.updateCoverImageUrl(dbProject.cover_image_id, clientCover.cover_image_URL);
                     }
                 }

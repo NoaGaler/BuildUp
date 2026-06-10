@@ -23,11 +23,11 @@ const isImageFile = (file) => {
 // type validation for supported media types (images, videos, audio, PDFs, text files)
 const isSupportedMediaType = (file) => {
     if (!file || !file.mimetype) return false;
-    
-    return file.mimetype.startsWith('image/') || 
-           file.mimetype.startsWith('video/') || 
-           file.mimetype.startsWith('audio/') || 
-           file.mimetype.startsWith('text/');
+
+    return file.mimetype.startsWith('image/') ||
+        file.mimetype.startsWith('video/') ||
+        file.mimetype.startsWith('audio/') ||
+        file.mimetype.startsWith('text/');
 };
 
 
@@ -51,7 +51,7 @@ class ProjectValidation {
         }
 
         const firstFile = mediaFiles[0];
-        
+
         if (!firstFile || !firstFile.mimetype) {
             return res.status(400).json({
                 success: false,
@@ -142,4 +142,4 @@ class ProjectValidation {
     }
 }
 
-export default ProjectValidation ;
+export default ProjectValidation;

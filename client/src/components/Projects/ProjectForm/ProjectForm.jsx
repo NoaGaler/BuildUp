@@ -11,7 +11,7 @@ import './ProjectForm.css';
 const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
     const navigate = useNavigate();
     const { categories = [] } = useCategories();
-    const { user } = useAuth(); // Destructured user context object[cite: 1]
+    const { user } = useAuth();
 
     const isEditMode = !!initialValues;
     const preparedMediaItems = initialValues?.mediaItems || [{ url: '', ext: 'png' }];
@@ -60,7 +60,7 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
         e.preventDefault();
         setSubmissionError(null);
 
-        if (!title.trim() || !description.trim()|| !categoryId) {
+        if (!title.trim() || !description.trim() || !categoryId) {
             setSubmissionError("Core specifications configuration parameters cannot remain blank. Please pick a workspace category section.");
             return;
         }
@@ -78,7 +78,7 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
         setFormLoading(true);
 
         const processedMediaArray = mediaItems
-            .filter(m => m.url.trim() !== '')
+            .filter(m => m.url && m.url.trim() !== '')
             .map(m => {
                 const targetType = analyzeMediaType(m.ext);
                 let embeddedFolder = '/uploads/projects/images/';
@@ -87,13 +87,15 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
 
                 return {
                     id: m.id || null,
+                    ext: m.ext,
                     media_type: targetType,
-                    media_url: `${embeddedFolder}${m.url.trim()}.${m.ext.trim().toLowerCase()}`
+                    media_url: `${embeddedFolder}${m.url.trim()}.${m.ext.trim().toLowerCase()}`,
+                    originalName: `${m.url.trim()}.${m.ext.trim().toLowerCase()}`
                 };
             });
 
         const errorFeedback = await onSubmitAction(
-            { title, description, categoryId },
+            { title, description, category_id: categoryId },
             processedMediaArray,
             { isCoverDirty, isSecondaryDirty }
         );
@@ -128,17 +130,34 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                     <div className="form-field-wrapper-label">
                         <span>Workspace Category Section *</span>
                         <div className="form-category-cards-selector-grid">
-                            {allowedCategories.map(cat => (
+                            {/* {allowedCategories.map(cat => (
                                 <CategoryCard
                                     key={cat.id}
                                     categoryId={cat.id}
                                     isSelected={Number(categoryId) === Number(cat.id)}
                                     onClick={handleCategorySelect}
                                 />
-                            ))}
+                            ))} */}
+                            {user.role === 'admin' ?
+                                (categories.map(cat => (
+                                    <CategoryCard
+                                        key={cat.id}
+                                        categoryId={cat.id}
+                                        isSelected={Number(categoryId) === Number(cat.id)}
+                                        onClick={handleCategorySelect}
+                                    />
+                                )))
+                                :
+                                (allowedCategories.map(cat => (
+                                    <CategoryCard
+                                        key={cat.id}
+                                        categoryId={cat.id}
+                                        isSelected={Number(categoryId) === Number(cat.id)}
+                                        onClick={handleCategorySelect}
+                                    />
+                                )))}
                         </div>
                     </div>
-
                 </div>
 
                 <div className="form-media-assets-manager-panel">

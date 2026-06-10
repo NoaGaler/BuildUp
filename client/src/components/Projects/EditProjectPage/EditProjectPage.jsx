@@ -1,83 +1,3 @@
-// // src/components/Projects/EditProjectPage/EditProjectPage.jsx
-// import React, { useEffect, useState } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-// import projectService from '../../../services/projectService';
-// import ProjectForm from '../ProjectForm/ProjectForm';
-
-// const EditProjectPage = () => {
-//     const { id } = useParams();
-//     const navigate = useNavigate();
-//     const [sanitizedData, setSanitizedData] = useState(null);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
-
-//     useEffect(() => {
-//         const fetchAndSanitize = async () => {
-//             try {
-//                 setLoading(true);
-//                 const result = await projectService.getProjectById(id);
-
-//                 if (result.success && result.data) {
-//                     const raw = result.data;
-
-//                     // עיבוד מראש של קבצי המדיה - הוצאת הלוגיקה המורכבת מתוך הטופס
-//                     const processedMedia = (raw.mediaFiles || []).map(m => {
-//                         const lastDot = m.media_url.lastIndexOf('.');
-//                         return {
-//                             id: m.id,
-//                             url: lastDot !== -1 ? m.media_url.substring(0, lastDot) : m.media_url,
-//                             ext: lastDot !== -1 ? m.media_url.substring(lastDot + 1) : 'png'
-//                         };
-//                     });
-
-//                     // בניית אובייקט נקי המכיל אך ורק את השדות הניתנים לעריכה פיזית
-//                     const cleanPayload = {
-//                         title: raw.title || '',
-//                         description: raw.description || '',
-//                         category_id: raw.category_id || '',
-//                         mediaItems: processedMedia.length > 0 ? processedMedia : [{ url: '', ext: 'png' }]
-//                     };
-
-//                     setSanitizedData(cleanPayload);
-//                 } else {
-//                     setError(result.message || "Project asset initialization failed.");
-//                 }
-//             } catch (err) {
-//                 setError("Failed to fetch requested project data from server.");
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         if (id) fetchAndSanitize();
-//     }, [id]);
-
-//     if (loading) return <div className="details-status-msg">Loading current project configurations...</div>;
-//     if (error) return <div className="details-status-msg error">{error}</div>;
-
-//     return (
-//         <div className="edit-project-page-wrapper">
-//             <ProjectForm initialProjectData={sanitizedData} />
-//         </div>
-//     );
-// };
-
-// export default EditProjectPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import projectService from '../../../services/projectService';
@@ -138,6 +58,7 @@ const EditProjectPage = () => {
         if (id) fetchAndSanitize();
     }, [id]);
 
+    // Packaging the data according to the server and sending it
     const handleEditSubmit = async (formData, processedMediaArray, trackingFlags) => {
         const getMimetype = (ext) => {
             const cleanExt = ext.toLowerCase().trim();
@@ -148,29 +69,29 @@ const EditProjectPage = () => {
             return `image/${cleanExt}`;
         };
 
-        // Prepare complete transformed array items beforehand
         const convertedMediaItems = processedMediaArray.map(m => {
-            const filenameWithExt = m.media_url.substring(m.media_url.lastIndexOf('/') + 1);
-            const fileExt = filenameWithExt.substring(filenameWithExt.lastIndexOf('.') + 1);
             return {
                 id: m.id || null,
-                originalName: filenameWithExt,
-                mimetype: getMimetype(fileExt)
+                media_type: m.media_type,
+                media_url: m.media_url,
+                mimetype: getMimetype(m.ext || 'png'),
+                originalName: m.originalName || ''
             };
         });
 
         const updatePayload = {
             title: formData.title,
             description: formData.description,
-            category_id: Number(formData.categoryId),
+            category_id: Number(formData.category_id),
             mediaFiles: {}
         };
 
-        if (trackingFlags.isCoverDirty) {
+        if (trackingFlags.isCoverDirty && convertedMediaItems.length > 0) {
             updatePayload.mediaFiles.cover_image = {
-                cover_image_id: convertedMediaItems[0]?.id || null,
-                originalName: convertedMediaItems[0]?.originalName || '',
-                mimetype: convertedMediaItems[0]?.mimetype || ''
+                cover_image_id: convertedMediaItems[0].id || sanitizedData?.mediaItems[0]?.id,
+                cover_image_URL: convertedMediaItems[0].media_url,
+                originalName: convertedMediaItems[0].originalName,
+                mimetype: convertedMediaItems[0].mimetype
             };
         }
 
@@ -185,8 +106,9 @@ const EditProjectPage = () => {
         const response = await updateProject(id, updatePayload);
         if (response.success) {
             navigate(`/projects/${id}`, { replace: true });
+            return null;
         } else {
-            return response.message;
+            return response.message || "Failed to save data layout updates.";
         }
     };
 

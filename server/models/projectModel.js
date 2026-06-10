@@ -1,4 +1,3 @@
-
 import pool from '../config/db.js';
 
 class projectModel {
@@ -142,7 +141,19 @@ class projectModel {
 
             // If no match is found, reject the operation immediately to preserve database integrity
             if (categoryRows.length === 0) {
-                throw new Error(`Unauthorized operation: Professional ID ${professional_id} is not mapped to Category ID ${category_id}.`);
+                // throw new Error(`Unauthorized operation: Professional ID ${professional_id} is not mapped to Category ID ${category_id}.`);
+                const adminCheckQuery = `
+                SELECT role FROM users 
+                WHERE id = ?
+            `;
+                const [userRows] = await connection.query(adminCheckQuery, [professional_id]);
+
+                const userRole = userRows[0]?.role;
+
+                // אם המשתמש לא קיים בכלל, או שהוא קיים אבל הוא לא admin - נחסום את הפעולה
+                if (userRole !== 'admin') {
+                    throw new Error(`Unauthorized operation: User ID ${professional_id} is neither mapped to Category ID ${category_id} nor an admin.`);
+                }
             }
 
             await connection.beginTransaction();
@@ -223,11 +234,9 @@ class projectModel {
         try {
             await connection.beginTransaction();
 
-            // מחיקת הגלריה הישנה, שומרים על הקאבר שלא יימחק
             const deleteQuery = 'DELETE FROM project_media WHERE project_id = ? AND id != ?';
             await connection.query(deleteQuery, [projectId, coverImageId]);
 
-            // אם הגיעו נתונים חדשים להכנסה מרובה
             if (processedMedia && processedMedia.length > 0) {
                 const insertQuery = 'INSERT INTO project_media (project_id, media_type, media_url) VALUES ?';
                 const values = processedMedia.map(file => [projectId, file.media_type, file.media_url]);
@@ -244,19 +253,17 @@ class projectModel {
         }
     }
 
-
-
     // Delete a project and all its associated media
     static async deleteProject(projectId) {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
 
-            // Delete all attached media pieces first
+            await connection.query("UPDATE projects SET cover_image_id = NULL WHERE id = ?", [projectId]);
+
             const deleteMediaQuery = "DELETE FROM project_media WHERE project_id = ?";
             await connection.query(deleteMediaQuery, [projectId]);
 
-            // Delete the primary project record
             const deleteProjectQuery = "DELETE FROM projects WHERE id = ?";
             const [result] = await connection.query(deleteProjectQuery, [projectId]);
 
