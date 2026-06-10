@@ -1,53 +1,36 @@
 import CommentModel from '../models/commentModel.js';
 
 class CommentController {
-    /**
-     * Compiles a specific slice of project comments based on client-driven pagination.
-     * Expects query string parameters: GET /api/comments/:projectId?page=1&limit=5
-     */
+
     static async getCommentsByProject(req, res) {
         try {
             const { projectId } = req.params;
-            
-            // Extract pagination controls defined dynamically by the React frontend framework
-            const page = req.query.page ? parseInt(req.query.page, 10) : 1;
-            const limit = req.query.limit ? parseInt(req.query.limit, 10) : 5;
-
-            // Compute the SQL query row starting placement index offset boundary using standard formula
+            // המרה ל-Integer בטוחה: אם זה לא מספר, נגדיר ערך ברירת מחדל
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 5;
             const offset = (page - 1) * limit;
 
-            // Gather the target data slice from the database model abstraction layers
             const comments = await CommentModel.getByProjectIdPaginated(
-                Number(projectId), 
-                limit, 
+                parseInt(projectId),
+                limit,
                 offset
             );
 
-            return res.status(200).json({
-                success: true,
-                message: "Project comments chunk synchronized successfully matching client layout requirements.",
-                data: comments
-            });
-        } catch (err) {
-            console.error("Runtime exception inside paginated getCommentsByProject segment:", err);
-            return res.status(500).json({
-                success: false,
-                message: "Internal server error compiled during sequential catalog lookup operations."
-            });
+            res.status(200).json({ success: true, data: comments });
+        } catch (error) {
+            console.error("Error in getCommentsByProject controller:", error);
+            res.status(500).json({ success: false, message: "Internal server error." });
         }
-    }
+    };
 
-    /**
-     * Appends a text entry reference linked to a unique user and target project index.
-     * Expects parameters within body payload: { projectId, userId, commentText }
-     */
+    // Appends a text entry reference linked to a unique user and target project index.
     static async addComment(req, res) {
         try {
             const { projectId, userId, commentText } = req.body;
 
             const result = await CommentModel.create(
-                Number(projectId), 
-                Number(userId), 
+                Number(projectId),
+                Number(userId),
                 commentText.trim()
             );
 
@@ -68,10 +51,7 @@ class CommentController {
         }
     }
 
-    /**
-     * Modifies the text content string property of an already verified persistent comment entry.
-     * PUT /api/comments/:commentId -> Body data: { commentText }
-     */
+    // Modifies the text content string property of an already verified persistent comment entry.
     static async updateComment(req, res) {
         try {
             const { commentId } = req.params;
@@ -99,10 +79,7 @@ class CommentController {
         }
     }
 
-    /**
-     * Completely removes a structural comment node reference path from system table data rows.
-     * DELETE /api/comments/:commentId
-     */
+    // Completely removes a structural comment node reference path from system table data rows.
     static async deleteComment(req, res) {
         try {
             const { commentId } = req.params;

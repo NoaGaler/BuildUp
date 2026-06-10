@@ -59,7 +59,6 @@
     width: 100%;
     height: 450px;
     border-radius: 24px;
-    /* קימורים רכים ויוקרתיים */
     overflow: hidden;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03);
     background-color: #F7F7F4;
@@ -84,7 +83,6 @@
     object-fit: contain;
 }
 
-/* קונטיינר גיבוי עבור נגני שמע / אודיו */
 .hero-display-audio-fallback-container {
     width: 100%;
     height: 100%;
@@ -161,6 +159,13 @@
     letter-spacing: 0.5px;
 }
 
+.project-date {
+    font-size: 0.85rem;
+    color: #999;
+    font-weight: normal;
+    text-align: right;
+}
+
 /* ==========================================================================
    3. TEXT METADATA, TYPOGRAPHY & EDIT ACTIONS
    ========================================================================== */
@@ -171,9 +176,6 @@
 }
 
 .details-header-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     gap: 16px;
     width: 100%;
 }
@@ -184,6 +186,26 @@
     font-weight: 700;
     margin: 0;
     line-height: 1.3;
+}
+
+.details-actions-wrapper-right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.details-management-actions-inline {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-details-favorite-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 4px;
+    transition: transform 0.2s, color 0.2s;
 }
 
 .details-description-body-paragraph {
@@ -312,7 +334,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: auto;
+    margin-top: 0;
     padding-top: 12px;
 }
 

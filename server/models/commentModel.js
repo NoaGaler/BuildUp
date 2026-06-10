@@ -1,21 +1,18 @@
-import db from '../config/db.js';
+import pool from '../config/db.js';
 
 class CommentModel {
-    /**
-     * Inserts a new comment row link inside the persistent project_comments table layout.
-     */
+
+    // Inserts a new comment row link inside the persistent project_comments table layout.
     static async create(projectId, userId, commentText) {
         const query = `
             INSERT INTO project_comments (project_id, user_id, comment_text)
             VALUES (?, ?, ?);
         `;
-        const [result] = await db.execute(query, [projectId, userId, commentText]);
+        const [result] = await pool.query(query, [projectId, userId, commentText]);
         return result;
     }
 
-    /**
-     * Retrieves a single compiled comment instance by its primary auto-increment key.
-     */
+    // Retrieves a single compiled comment instance by its primary auto-increment key.
     static async getSingleCommentById(commentId) {
         const query = `
             SELECT 
@@ -25,13 +22,11 @@ class CommentModel {
             INNER JOIN users u ON c.user_id = u.id
             WHERE c.id = ?;
         `;
-        const [rows] = await db.execute(query, [commentId]);
+        const [rows] = await pool.query(query, [commentId]);
         return rows;
     }
 
-    /**
-     * Gathers a clean synchronized slice of records using client-driven limit and offset boundaries.
-     */
+    // Receive all responses for a specific project
     static async getByProjectIdPaginated(projectId, limit, offset) {
         const query = `
             SELECT 
@@ -43,33 +38,28 @@ class CommentModel {
             ORDER BY c.created_at DESC
             LIMIT ? OFFSET ?;
         `;
-        // הגדרנו את הפרמטרים כמערך. חשוב לוודא ש-limit ו-offset הם מספרים
-        const [rows] = await db.execute(query, [projectId, Number(limit), Number(offset)]);
+        const [rows] = await pool.query(query, [projectId, Number(limit), Number(offset)]);
         return rows;
     }
 
-    /**
-     * Alters the structural text block content description property inside a persistent table row.
-     */
+    // Alters the structural text block content description property inside a persistent table row.
     static async update(commentId, commentText) {
         const query = `
             UPDATE project_comments 
             SET comment_text = ? 
             WHERE id = ?;
         `;
-        const [result] = await db.execute(query, [commentText, commentId]);
+        const [result] = await pool.query(query, [commentText, commentId]);
         return result;
     }
 
-    /**
-     * Completely eliminates an exact unique comment index from persistent database storage sheets.
-     */
+    // Completely eliminates an exact unique comment index from persistent database storage sheets.
     static async delete(commentId) {
         const query = `
             DELETE FROM project_comments 
             WHERE id = ?;
         `;
-        const [result] = await db.execute(query, [commentId]);
+        const [result] = await pool.query(query, [commentId]);
         return result;
     }
 }

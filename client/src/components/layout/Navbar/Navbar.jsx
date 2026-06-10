@@ -40,9 +40,6 @@ const Navbar = () => {
           <NavLink to="/jobs" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
             <FiBriefcase size={18} /> <span>Jobs</span>
           </NavLink>
-          <NavLink to="/favorites" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <FiHeart size={18} /> <span>Favorites</span>
-          </NavLink>
           <NavLink to="/professionals" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
             <FiUsers size={18} /> <span>Professionals</span>
           </NavLink>

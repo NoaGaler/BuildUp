@@ -11,7 +11,6 @@ import Register from './components/Auth/Register/Register.jsx';
 
 import MainLayout from './components/Layout/MainLayout/MainLayout';
 
-import Favorites from './components/Projects/Favorites.jsx'
 import Projects from './components/Projects/Projects.jsx'
 import ProjectsPage from './components/Projects/ProjectsPage/ProjectsPage.jsx';
 import ProjectDetails from './components/Projects/ProjectDetails/ProjectDetails.jsx';
@@ -35,15 +34,12 @@ function App() {
             <Route path="/" element={<MainLayout />}>
 
               {/* Projects Routes */}
-              <Route path="projects" element={<Projects />}>
+              <Route path="/projects" element={<Projects />}>
                 <Route index element={<ProjectsPage />} />
+                <Route path="favorites" element={<ProjectsPage />} />
                 <Route path="new" element={<CreateProjectPage />} />
                 <Route path=":id" element={<ProjectDetails />} />
                 <Route path=":id/edit" element={<EditProjectPage />} />
-              </Route>
-
-              <Route path="/favorites" element={<Favorites />}>
-                <Route index element={<ProjectsPage />} />
               </Route>
 
               <Route path="/jobs" element={<></>} />

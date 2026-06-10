@@ -4,11 +4,6 @@ import CommentValidation from '../middleware/commentValidation.js';
 
 const router = express.Router();
 
-// router.get('/:projectId', CommentValidation.validateProjectParams, CommentController.getCommentsByProject);
-// router.post('/add', CommentValidation.validateCreateBody, CommentController.addComment);
-// router.put('/:commentId', CommentValidation.validateCommentParams, CommentController.updateComment);
-// router.delete('/:commentId', CommentValidation.validateCommentParams, CommentController.deleteComment);
-
 router.get('/:projectId', CommentValidation.fetch, CommentController.getCommentsByProject);
 router.post('/add', CommentValidation.create, CommentController.addComment);
 router.put('/:commentId', CommentValidation.update, CommentController.updateComment);
