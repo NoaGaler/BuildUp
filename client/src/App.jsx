@@ -19,6 +19,11 @@ import ProjectDetails from './components/Projects/ProjectDetails/ProjectDetails.
 import CreateProjectPage from './components/Projects/CreateProjectPage/CreateProjectPage.jsx';
 import EditProjectPage from './components/Projects/EditProjectPage/EditProjectPage.jsx';
 
+import Jobs from './components/Jobs/Jobs.jsx';
+import JobsPage from './components/Jobs/JobsPage/JobsPage.jsx';
+import JobDetails from './components/Jobs/JobDetails/JobDetails.jsx';
+import JobForm from './components/Jobs/JobForm/JobForm.jsx';
+
 import './App.css';
 import Logo from './components/UI/Logo.jsx';
 
@@ -45,14 +50,39 @@ function App() {
                 <Route path=":id/edit" element={<EditProjectPage />} />
               </Route>
 
-              <Route path="/jobs" element={<></>} />
-              <Route path="/professionals" element={<></>} />
+              {/* jobs Routes */}
+              {/* <Route path="/jobs" element={<Jobs />}>
+                <Route index element={<JobsPage />} />
+                <Route path=":id" element={<JobsPage />} />
+                <Route path="new" element={<JobForm />} />
+                <Route path="edit/:id" element={<JobForm />} />
+              </Route> */}
 
+              {/* <Route path="/jobs" element={<Jobs />}>
+                <Route index element={<JobsPage />} >
+                  <Route path=":id" element={<JobDetails />} />
+                  <Route path="new" element={<JobForm />} />
+                  <Route path="edit/:id" element={<JobForm />} />
+                </Route>
+              </Route> */}
+
+              <Route path="/jobs" element={<Jobs />}>
+                {/* JobsPage serves as the persistent layout rendering the master grid list */}
+                <Route path="" element={<JobsPage />}>
+                  <Route index element={<></>} />
+                  <Route path=":id" element={<JobDetails />} />
+                  <Route path="edit/:id" element={<JobForm />} />
+                </Route>
+                <Route path="new" element={<JobForm />} />
+              </Route>
+
+              <Route path="/professionals" element={<></>} />
             </Route>
 
             {/* Default Route */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          
         </CategoryProvider>
       </AuthProvider>
     </Router>

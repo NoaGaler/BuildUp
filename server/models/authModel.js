@@ -89,18 +89,6 @@ class authModel {
     }
 
     // Corrected to perform a JOIN with your exact 'password' table name
-    // static async login (email) {
-    //     const query = `
-    //         SELECT u.id, u.email, u.name, u.role, u.profile_image_url, p.password 
-    //         FROM users u
-    //         JOIN password p ON u.id = p.user_id
-    //         WHERE u.email = ?
-    //     `;
-    //     const [rows] = await pool.query(query, [email]);
-    //     return rows[0];
-    // }
-
-    // Corrected to perform a JOIN with your exact 'password' table name
     static async login(email) {
         const query = `
             SELECT u.id, u.email, u.name, u.role, u.profile_image_url, p.password 
@@ -122,13 +110,6 @@ class authModel {
 
     }
 
-    // // Retrieves user details by ID
-    // static async findById(id) {
-    //     const query = 'SELECT id, email, name, role, profile_image_url FROM users WHERE id = ?';
-    //     const [rows] = await pool.query(query, [id]);
-    //     return rows[0];
-    // }
-
     // Retrieves user details by ID
     static async findById(id) {
         const query = 'SELECT id, email, name, role, profile_image_url FROM users WHERE id = ?';
@@ -148,7 +129,7 @@ class authModel {
     static async getProfessionalCategories(userId) {
         const query = 'SELECT category_id FROM professional_categories WHERE user_id = ?';
         const [rows] = await pool.query(query, [userId]);
-        // הופך מערך של אובייקטים למערך פשוט של מספרים: [1, 2, 3]
+        // Converts an array of objects into a simple array of numbers.
         return rows.map(row => row.category_id);
     }
 }

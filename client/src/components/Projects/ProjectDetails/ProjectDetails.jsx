@@ -219,13 +219,7 @@ const ProjectDetails = () => {
                     <p className="details-description-body-paragraph">{description}</p>
 
                     <p className="project-date">
-                        {new Date(project.created_at).toLocaleString([], {
-                            year: 'numeric',
-                            month: 'numeric',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        })}
+                        {new Date(project.created_at).toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </p>
 
                     {/* New Section: Professional Identity Business Profile Context Display Block */}
@@ -263,12 +257,13 @@ const ProjectDetails = () => {
 
             <Modal
                 isOpen={isDeleteModalOpen}
-                title="Confirm Permanent Deletion"
-                message="Are you absolutely sure you want to authorize and commit the removal of this project asset? This will permanently wipe all text descriptions and media slots from the persistent server layers catalog."
+                title="Are you sure you want to delete?"
+                message="This action will permanently delete all text descriptions and budget parameters from the live market trading feed."
                 confirmText="Yes, Delete Asset"
                 cancelText="Keep Project Design"
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
+                danger={true}
             />
         </div>
     );

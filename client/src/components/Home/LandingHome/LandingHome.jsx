@@ -19,7 +19,7 @@ const LandingHome = () => {
 
                 <div className="hero-buttons">
                     <button className="btn-primary" onClick={() => navigate('/register')} > <FiUserPlus /> Get Started </button>
-                    <button className="btn-secondary" onClick={() => navigate('/login')} > <FiLogIn /> Sign In </button>
+                    <button className="btn-secondary" onClick={() => navigate('/login')} > <FiLogIn /> Log In </button>
                 </div>
             </section>
 

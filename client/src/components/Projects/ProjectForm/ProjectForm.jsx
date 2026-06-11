@@ -6,6 +6,7 @@ import { useCategories } from '../../../context/categoryContext';
 import { useAuth } from '../../../context/authContext';
 
 import CategoryCard from '../../UI/CategoryCard/CategoryCard';
+import Modal from '../../UI/Modal/Modal';
 import './ProjectForm.css';
 
 const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
@@ -207,31 +208,25 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                 </div>
             </form>
 
-            {showSaveModal && (
-                <div className="form-overlay-modal-backdrop">
-                    <div className="form-dialog-confirmation-card">
-                        <h3 className="modal-dialog-title">Confirm Database Update</h3>
-                        <p className="modal-dialog-description">Are you absolutely sure you want to authorize and commit these project modifications data profiles to the server registry catalog scope?</p>
-                        <div className="modal-dialog-actions-row">
-                            <button type="button" className="btn-dialog-link modal-cancel-trigger" onClick={() => setShowSaveModal(false)}>Go Back</button>
-                            <button type="button" className="btn-dialog-link modal-confirm-save-trigger" onClick={handleConfirmFinalSave}>Yes, Commit Changes</button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {showCancelModal && (
-                <div className="form-overlay-modal-backdrop">
-                    <div className="form-dialog-confirmation-card">
-                        <h3 className="modal-dialog-title-warning">Discard Unsaved Changes</h3>
-                        <p className="modal-dialog-description">Warning: You are about to exit this active workspace layout sequence. Are you sure you want to discard all unsaved edits?</p>
-                        <div className="modal-dialog-actions-row">
-                            <button type="button" className="btn-dialog-link modal-cancel-trigger" onClick={() => setShowCancelModal(false)}>Keep Editing</button>
-                            <button type="button" className="btn-dialog-link modal-confirm-discard-trigger" onClick={() => navigate(-1)}>Yes, Discard Work</button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* Model for confirmation of retention */}
+            <Modal
+                isOpen={showSaveModal}
+                title="Are you sure you want to save the changes?"
+                confirmText="Yes, Commit Changes"
+                cancelText="Go Back"
+                onConfirm={handleConfirmFinalSave}
+                onCancel={() => setShowSaveModal(false)}
+            />
+            {/* Model for confirming not saving changes */}
+            <Modal
+                isOpen={showCancelModal}
+                title="Are you sure you want to cancel the changes?"
+                confirmText="Yes, Discard Work"
+                cancelText="Keep Editing"
+                onConfirm={() => navigate(-1)}
+                onCancel={() => setShowCancelModal(false)}
+                danger={true}
+            />
         </div>
     );
 };

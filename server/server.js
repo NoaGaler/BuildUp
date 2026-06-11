@@ -7,6 +7,7 @@ import categoryRoutes from './routes/categoryRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import favoriteRoutes from './routes/favoriteRoutes.js'
 import commentRouter from './routes/commentRouter.js';
+import jobRoutes from './routes/jobRoutes.js';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -28,6 +29,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/comments', commentRouter);
+app.use('/api/jobs', jobRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
