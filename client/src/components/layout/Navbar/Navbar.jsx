@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FiMenu, FiHome, FiFolder, FiHeart, FiUsers, FiBriefcase, FiLogOut, FiUser } from 'react-icons/fi';
 
 import { useAuth } from '../../../context/authContext.jsx';
@@ -11,12 +11,23 @@ import './Navbar.css';
 const BACKEND_URL = 'http://localhost:5000';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { user, logoutUser } = useAuth();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   
   const handleConfirmLogout = () => {
     logoutUser();
     setIsLogoutModalOpen(false);
+  };
+
+  const handleProfileNavigation = () => {
+    if (!user) return;
+    
+    if (user.role === 'professional') {
+      navigate(`/professionals/${user.id}`);
+    } else {
+      navigate(`/profile/${user.id}`);
+    }
   };
 
   return (
@@ -50,14 +61,14 @@ const Navbar = () => {
           {user ? (
             <div className="logged-in-wrapper">
               
-              <Link to={`/profile/${user.id}`} className="user-profile-card" title="Go to Profile">
+              <div onClick={handleProfileNavigation}  className="user-profile-card" title="Go to Profile">
                 {user.profile_image_url ? (
                   <img src={`${BACKEND_URL}${user.profile_image_url}`} alt={user.name} className="navbar-avatar" />
                 ) : (
                   <FiUser size={18} className="default-avatar-icon" />
                 )}
                 <span className="navbar-username">{user.name}</span>
-              </Link>
+              </div>
               
               <button 
                 type="button" 

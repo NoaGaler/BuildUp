@@ -10,7 +10,6 @@ import LoginForm from './components/Auth/Login/LoginForm';
 import Register from './components/Auth/Register/Register.jsx';
 
 import MainLayout from './components/Layout/MainLayout/MainLayout';
-
 import HomePage from './components/Home/HomePage.jsx'
 
 import Projects from './components/Projects/Projects.jsx'
@@ -23,6 +22,19 @@ import Jobs from './components/Jobs/Jobs.jsx';
 import JobsPage from './components/Jobs/JobsPage/JobsPage.jsx';
 import JobDetails from './components/Jobs/JobDetails/JobDetails.jsx';
 import JobForm from './components/Jobs/JobForm/JobForm.jsx';
+
+// import ProfessionalOwnerRoute from './components/Profiles/ProfessionalOwnerRoute.jsx';
+import Professionals from './components/Profiles/Professionals.jsx';
+import ProfessionalsPage from './components/Profiles/ProfessionalsPage/ProfessionalsPage.jsx';
+// import ProfessionalProfilePage from './components/Profiles/ProfessionalProfilePage.jsx';
+// import ProfessionalView from './components/Profiles/ProfessionalView.jsx';
+// import ProfessionalEdit from './components/Profiles/ProfessionalEdit.jsx';
+import ProfilePage from './components/Profiles/ProfilePage/ProfilePage.jsx';
+import ProfileEdit from './components/Profiles/ProfileEdit/ProfileEdit.jsx';
+
+// import ClientProfilePage from './components/ClientProfile/ClientProfilePage.jsx';
+// import ClientView from './components/ClientProfile/ClientView.jsx';
+// import ClientEdit from './components/ClientProfile/ClientEdit.jsx';
 
 import './App.css';
 import Logo from './components/UI/Logo.jsx';
@@ -51,41 +63,37 @@ function App() {
               </Route>
 
               {/* jobs Routes */}
-              {/* <Route path="/jobs" element={<Jobs />}>
-                <Route index element={<JobsPage />} />
-                <Route path=":id" element={<JobsPage />} />
-                <Route path="new" element={<JobForm />} />
-                <Route path="edit/:id" element={<JobForm />} />
-              </Route> */}
-
-              {/* <Route path="/jobs" element={<Jobs />}>
-                <Route index element={<JobsPage />} >
-                  <Route path=":id" element={<JobDetails />} />
-                  <Route path="new" element={<JobForm />} />
-                  <Route path="edit/:id" element={<JobForm />} />
-                </Route>
-              </Route> */}
-
               <Route path="/jobs" element={<Jobs />}>
-                {/* JobsPage serves as the persistent layout rendering the master grid list */}
                 <Route path="" element={<JobsPage />}>
-                  <Route index element={<></>} />
                   <Route path=":id" element={<JobDetails />} />
                   <Route path="edit/:id" element={<JobForm />} />
                 </Route>
                 <Route path="new" element={<JobForm />} />
               </Route>
 
-              <Route path="/professionals" element={<></>} />
-            </Route>
+              {/* <Route path="professionals" element={<Professionals />}>
+                <Route index element={<ProfessionalsPage />} />
+                <Route path=":id" element={<ProfessionalProfilePage />}>
+                  <Route index element={<ProfessionalView />} />
+                </Route>
+                <Route path=":id/edit" element={<ProfessionalEdit />} />
+              </Route> */}
 
-            {/* Default Route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-          
-        </CategoryProvider>
-      </AuthProvider>
-    </Router>
+              {/* <Route path="/" element={<Professionals />}>
+                <Route path="professionals" element={<ProfessionalsPage />} />
+                <Route path="profile/:id" element={<ProfilePage />} />
+                <Route path="profile/:id/edit" element={<ProfileEdit />} />
+              </Route> */}
+
+          </Route>
+
+          {/* Default Route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+
+      </CategoryProvider>
+    </AuthProvider>
+    </Router >
   );
 }
 
