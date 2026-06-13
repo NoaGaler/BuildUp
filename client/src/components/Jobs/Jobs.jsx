@@ -22,13 +22,14 @@ const JobsGuard = () => {
 
         // 3. New Job post creation rules constraint setup
         if (isNewRoute) {
-            console.log('JobsGuard');
             setCanRender(true);
             return;
         }
 
         // 4. Edit validation checkpoint layer: Creator owner verification match routine
         if (isEditRoute) {
+            if (jobs.length === 0) return;
+
             const currentJob = jobs.find(j => j.id === Number(id));
 
             // If the jobs data context array state hasn't resolved yet, bypass redirect temporarily
@@ -43,6 +44,7 @@ const JobsGuard = () => {
                 const isAdmin = user.role === 'admin';
 
                 if (isOwner || isAdmin) {
+
                     setCanRender(true);
                 } else {
                     setCanRender(false);

@@ -38,13 +38,24 @@ const JobForm = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
 
     useEffect(() => {
+
         if (!isEditMode) return;
 
         const loadJobData = async () => {
             try {
                 setDataFetching(true);
+
                 const jobData = await fetchJobById(id);
+
                 if (jobData) {
+                    const isOwner = Number(jobData.client_id) === Number(user?.id);
+                    const isAdmin = user?.role === 'admin';
+
+                    if (!isOwner && !isAdmin) {
+                        navigate(-1, { replace: true });
+                        return;
+                    }
+
                     setTitle(jobData.title || '');
                     setDescription(jobData.description || '');
                     setBudget(jobData.budget || '');
@@ -60,7 +71,7 @@ const JobForm = () => {
         };
 
         loadJobData();
-    }, [id, isEditMode, fetchJobById, navigate]);
+    }, [id, isEditMode, fetchJobById, navigate, user]);
 
     if (dataFetching) {
         return <div className="details-status-msg">Loading current job specifications...</div>;
@@ -202,25 +213,25 @@ const JobForm = () => {
             </form>
 
             {/* Job save and post confirmation modal */}
-                <Modal
-                    isOpen={showSaveModal}
-                    title="Are you sure you want to save the changes?"
-                    confirmText="Yes, Publish"
-                    cancelText="Go Back"
-                    onConfirm={handleConfirmFinalSave}
-                    onCancel={() => setShowSaveModal(false)}
-                />
+            <Modal
+                isOpen={showSaveModal}
+                title="Are you sure you want to save the changes?"
+                confirmText="Yes, Publish"
+                cancelText="Go Back"
+                onConfirm={handleConfirmFinalSave}
+                onCancel={() => setShowSaveModal(false)}
+            />
 
             {/* Cancellation confirmation modal and exit form */}
-                <Modal
-                    isOpen={showCancelModal}
-                    title="Are you sure you want to cancel the changes?"
-                    confirmText="Yes, Discard"
-                    cancelText="Keep Editing"
-                    onConfirm={() => navigate('/jobs')}
-                    onCancel={() => setShowCancelModal(false)}
-                    danger={true}
-                />
+            <Modal
+                isOpen={showCancelModal}
+                title="Are you sure you want to cancel the changes?"
+                confirmText="Yes, Discard"
+                cancelText="Keep Editing"
+                onConfirm={() => navigate('/jobs')}
+                onCancel={() => setShowCancelModal(false)}
+                danger={true}
+            />
         </div>
     );
 };

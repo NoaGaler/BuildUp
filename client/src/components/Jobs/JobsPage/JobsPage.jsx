@@ -96,8 +96,9 @@ const JobsPage = () => {
 
                 const isEditPath = window.location.pathname.includes('/edit/');
                 const isOwner = user?.id && data?.client_id && Number(data.client_id) === Number(user.id);
+                const isAdmin = user?.role === 'admin';
 
-                if (isEditPath && !isOwner) {
+                if (isEditPath && !isOwner && !isAdmin) {
                     navigate('/jobs', { replace: true });
                     return;
                 }

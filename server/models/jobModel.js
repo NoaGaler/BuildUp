@@ -1,8 +1,8 @@
 import pool from '../config/db.js';
 
-class Job {
+class JobModel {
     // Fetch jobs with dynamic query filtration and sorting.
-    static async getAllJobs (filters) {
+    static async getAllJobs(filters) {
         const { search, sort, category_id } = filters;
 
         let query = `
@@ -45,7 +45,7 @@ class Job {
         } else if (sort === 'title') {
             query += ` ORDER BY jp.title ASC `;
         } else {
-            query += ` ORDER BY jp.created_at DESC `; // Default 'newest' state
+            query += ` ORDER BY jp.created_at DESC `;
         }
 
         try {
@@ -58,7 +58,7 @@ class Job {
     };
 
     // Fetch a single job post by its primary key ID
-    static async getJobById (id) {
+    static async getJobById(id) {
         const query = `
             SELECT 
                 jp.id,
@@ -88,18 +88,12 @@ class Job {
     };
 
     // Insert a new job opportunity into the database registry
-    static async insertJob (jobData) {
+    static async insertJob(jobData) {
         const query = `
             INSERT INTO job_posts (title, description, budget, category_id, client_id, created_at)
             VALUES (?, ?, ?, ?, ?, NOW());
         `;
-        const values = [
-            jobData.title,
-            jobData.description,
-            jobData.budget || null, // Inserts NULL if budget is unassigned (Open Budget)
-            jobData.category_id,
-            jobData.client_id
-        ];
+        const values = [jobData.title, jobData.description, jobData.budget || null, jobData.category_id, jobData.client_id];
 
         try {
             const [result] = await pool.execute(query, values);
@@ -111,7 +105,7 @@ class Job {
     };
 
     // Delete a job post from the database registry by its primary key ID
-    static async deleteJob (id) {
+    static async deleteJob(id) {
         try {
             const query = `DELETE FROM job_posts WHERE id = ?`;
             const [result] = await pool.execute(query, [id]);
@@ -123,20 +117,14 @@ class Job {
     };
 
     // Update an existing job registry row by its primary key ID
-    static async updateJob (id, jobData) {
+    static async updateJob(id, jobData) {
         try {
             const query = `
                 UPDATE job_posts 
                 SET title = ?, description = ?, budget = ?, category_id = ?
                 WHERE id = ?
             `;
-            const values = [
-                jobData.title,
-                jobData.description,
-                jobData.budget || null,
-                jobData.category_id || null,
-                id
-            ];
+            const values = [jobData.title, jobData.description, jobData.budget || null, jobData.category_id || null, id];
 
             const [result] = await pool.execute(query, values);
             return result;
@@ -145,6 +133,17 @@ class Job {
             throw error;
         }
     };
+
+    static async getUserRole(userId) {
+        try {
+            const query = `SELECT role FROM users WHERE id = ?`;
+            const [rows] = await pool.execute(query, [userId]);
+            return rows.length > 0 ? rows[0].role : null;
+        } catch (error) {
+            console.error(`Database error inside Job.getUserRole for user ${userId}:`, error);
+            throw error;
+        }
+    }
 };
 
-export default Job;
+export default JobModel;

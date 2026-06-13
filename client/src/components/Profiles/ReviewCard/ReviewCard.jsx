@@ -34,7 +34,7 @@ const ReviewCard = ({ review, user, onEditReview, onDeleteReview }) => {
         const isOwner = String(user.id) === String(review.user_id);
         const isAdmin = user.role === 'admin';
         return {
-            canEdit: isOwner,
+            canEdit: isOwner || isAdmin,
             canDelete: isOwner || isAdmin
         };
     };

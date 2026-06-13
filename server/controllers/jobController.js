@@ -1,9 +1,9 @@
-import Job from '../models/jobModel.js';
+import JobModel from '../models/jobModel.js';
 
 class JobController {
-    
+
     // Get jobs with dynamic server-side filtration parameters
-    static async getAllJobs (req, res) {
+    static async getAllJobs(req, res) {
         try {
             const filters = {
                 search: req.query.search || null,
@@ -11,7 +11,7 @@ class JobController {
                 category_id: req.query.category_id || null
             };
 
-            const jobs = await Job.getAllJobs(filters);
+            const jobs = await JobModel.getAllJobs(filters);
             return res.status(200).json(jobs);
         } catch (error) {
             console.error('Error in getAllJobs controller:', error);
@@ -22,10 +22,10 @@ class JobController {
     };
 
     // Get a single job post by ID for the detail view
-    static async getJobById (req, res) {
+    static async getJobById(req, res) {
         try {
             const jobId = req.params.id;
-            const job = await Job.getJobById(jobId);
+            const job = await JobModel.getJobById(jobId);
 
             if (!job) {
                 return res.status(404).json({ message: 'Job post not found.' });
@@ -40,10 +40,10 @@ class JobController {
     };
 
     // Create a brand new job post
-    static async createNewJobPost (req, res) {
+    static async createNewJobPost(req, res) {
         try {
             const jobData = req.body;
-            const newJobId = await Job.insertJob(jobData);
+            const newJobId = await JobModel.insertJob(jobData);
 
             return res.status(201).json({
                 success: true,
@@ -60,12 +60,11 @@ class JobController {
     };
 
     // Update an existing job post with role-based access validation
-    static async updateJob (req, res) {
+    static async updateJob(req, res) {
         try {
             const jobId = req.params.id;
             const { userId, ...updatedData } = req.body;
 
-            // בתוך jobController.js, פונקציית updateJob:
             const cleanData = {
                 title: updatedData.title || '',
                 description: updatedData.description || '',
@@ -73,7 +72,6 @@ class JobController {
                 category_id: updatedData.category_id // כאן אנחנו לא עושים || null!
             };
 
-            // הוספת בדיקה:
             if (!cleanData.category_id) {
                 return res.status(400).json({ success: false, message: 'Category is required.' });
             }
@@ -82,13 +80,15 @@ class JobController {
                 return res.status(400).json({ success: false, message: 'Client verification context missing.' });
             }
 
-            const existingJob = await Job.getJobById(jobId);
+            const existingJob = await JobModel.getJobById(jobId);
 
             if (!existingJob) {
                 return res.status(404).json({ success: false, message: 'Job vacancy not found.' });
             }
 
             // Authorization Guard: Either the record creator or an authorized administrator
+            const userRole = await JobModel.getUserRole(userId);
+            const isAdmin = userRole === 'admin';
             const isOwner = Number(existingJob.client_id) === Number(userId);
 
             if (!isOwner && !isAdmin) {
@@ -99,7 +99,7 @@ class JobController {
             }
 
 
-            await Job.updateJob(jobId, cleanData);
+            await JobModel.updateJob(jobId, cleanData);
 
             return res.status(200).json({
                 success: true,
@@ -112,7 +112,7 @@ class JobController {
     }
 
     // Delete an existing job post with role-based access validation
-    static async deleteJob (req, res) {
+    static async deleteJob(req, res) {
         try {
             const jobId = req.params.id;
             const userId = req.query.userId;
@@ -121,13 +121,16 @@ class JobController {
                 return res.status(400).json({ success: false, message: 'Client verification context missing.' });
             }
 
-            const existingJob = await Job.getJobById(jobId);
+            const existingJob = await JobModel.getJobById(jobId);
 
             if (!existingJob) {
                 return res.status(404).json({ success: false, message: 'Job vacancy not found.' });
             }
 
             // Authorization Guard: Either the record creator or an authorized administrator
+            const userRole = await JobModel.getUserRole(userId);
+            const isAdmin = userRole === 'admin';
+
             const isOwner = Number(existingJob.client_id) === Number(userId);
 
             if (!isOwner && !isAdmin) {
@@ -137,7 +140,7 @@ class JobController {
                 });
             }
 
-            await Job.deleteJob(jobId);
+            await JobModel.deleteJob(jobId);
 
             return res.status(200).json({
                 success: true,
