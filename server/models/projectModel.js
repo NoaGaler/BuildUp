@@ -1,6 +1,6 @@
 import pool from '../config/db.js';
 
-class projectModel {
+class ProjectModel {
 
     // Get projects with optional filters and sorting
     static async getProjectsFiles(filters) {
@@ -279,4 +279,4 @@ class projectModel {
     }
 }
 
-export default projectModel;
+export default ProjectModel;

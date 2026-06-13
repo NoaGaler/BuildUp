@@ -1,11 +1,11 @@
 import express from 'express';
-import favoriteController from '../controllers/favoriteController.js';
-import favoriteValidation from'../middleware/FavoriteValidation.js';
+import FavoriteController from '../controllers/favoriteController.js';
+import FavoriteValidation from'../middleware/favoriteValidation.js';
 
 const router = express.Router();
 
-router.get('/', favoriteValidation.validateFetchQuery, favoriteController.getFavoriteProjects);
-router.post('/add', favoriteValidation.validateActionBody, favoriteController.addFavorite);
-router.delete('/remove', favoriteValidation.validateActionBody, favoriteController.removeFavorite);
+router.get('/', FavoriteValidation.validateFetchQuery, FavoriteController.getFavoriteProjects);
+router.post('/add', FavoriteValidation.validateActionBody, FavoriteController.addFavorite);
+router.delete('/remove', FavoriteValidation.validateActionBody, FavoriteController.removeFavorite);
 
 export default router;

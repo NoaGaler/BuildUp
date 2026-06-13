@@ -1,13 +1,12 @@
 import express from 'express';
-import ProfessionalReviewController from '../controllers/ProfessionalReviewController.js';
+import ProfessionalReviewController from '../controllers/professionalReviewController.js';
+import ProfessionalReviewValidation from '../middleware/professionalReviewValidation.js';
 
 const router = express.Router();
 
-// Route to fetch all reviews for a specific professional
 router.get('/professional/:professionalId', ProfessionalReviewController.getProfessionalReviews);
-// Route to post a new review for a specific professional
-router.post('/professional/:professionalId', ProfessionalReviewController.addReview);
-// Route to delete a specific review
+router.post('/professional/:professionalId', ProfessionalReviewValidation.create, ProfessionalReviewController.addReview);
+router.put('/:reviewId', ProfessionalReviewValidation.update, ProfessionalReviewController.editReview);
 router.delete('/:reviewId', ProfessionalReviewController.deleteReview);
 
 export default router;

@@ -22,7 +22,6 @@
     background: none;
     border: none;
     color: #60665D;
-    /* גוון חאקי-אפור עמוק ועדין */
     font-size: 0.95rem;
     font-weight: 500;
     display: flex;
@@ -35,10 +34,8 @@
 
 .back-navigation-link-btn:hover {
     color: #557A61;
-    /* מעבר חלק לירוק מרווה החתימה שלך */
 }
 
-/* גריד ראשי שמפצל את המסך במחשב ומאחד במובייל */
 .details-layout-main-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -107,7 +104,6 @@
     height: 36px;
 }
 
-/* חצי ניווט צפים על גבי המדיה */
 .carousel-control-arrow-btn {
     position: absolute;
     top: 50%;
@@ -145,7 +141,6 @@
     right: 16px;
 }
 
-/* בועית אינדקס תמונות צפה */
 .carousel-pagination-index-badge {
     position: absolute;
     bottom: 16px;

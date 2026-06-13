@@ -173,6 +173,7 @@ const JobForm = () => {
                                         categoryId={cat.id}
                                         isSelected={Number(categoryId) === Number(cat.id)}
                                         onClick={handleCategorySelect}
+                                        variant="pill"
                                     />
                                 ))
                             )}

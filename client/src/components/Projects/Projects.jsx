@@ -111,13 +111,11 @@ const ProjectsGuard = () => {
 
 const Projects = () => {
     return (
-        <ProjectProvider>
-            <FavoriteProvider>
-                <CommentProvider>
-                    <ProjectsGuard />
-                </CommentProvider>
-            </FavoriteProvider>
-        </ProjectProvider>
+        <FavoriteProvider>
+            <CommentProvider>
+                <ProjectsGuard />
+            </CommentProvider>
+        </FavoriteProvider>
     );
 };
 

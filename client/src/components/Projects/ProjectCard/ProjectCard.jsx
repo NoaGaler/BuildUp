@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiExternalLink, FiUser } from 'react-icons/fi';
+import CategoryCard from '../../UI/CategoryCard/CategoryCard';
 import './ProjectCard.css';
 
 const SERVER_URL = 'http://localhost:5000';
 
-const ProjectCard = ({ id, title, cover_image_url, professional_id, professional_name, professional_image, professional_tagline }) => {
+const ProjectCard = ({ id, title, cover_image_url, professional_id, professional_name, professional_image, professional_tagline, category_id }) => {
     const navigate = useNavigate();
 
     // Compiling the image asset paths dynamically with strict safe fallbacks
@@ -20,7 +20,6 @@ const ProjectCard = ({ id, title, cover_image_url, professional_id, professional
                 <img
                     src={finalCoverImg}
                     alt={title}
-                    // alt={finalCoverImg}
                     className="card-cover-asset-img"
                     loading="lazy"
                 />
@@ -33,6 +32,13 @@ const ProjectCard = ({ id, title, cover_image_url, professional_id, professional
 
             {/* Content Details and Professional Identity Context Area */}
             <div className="card-body-wrapper">
+
+                {category_id && (
+                    <div style={{ marginBottom: '10px' }}>
+                        <CategoryCard categoryId={category_id} variant="pill" />
+                    </div>
+                )}
+
                 <h3 className="card-display-title">{title}</h3>
 
                 <div className="card-creator-profile-footer">

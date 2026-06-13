@@ -1,7 +1,7 @@
-import projectModel from '../models/projectModel.js';
-import favoriteModel from '../models/FavoriteModel.js'
+import ProjectModel from '../models/projectModel.js';
+import FavoriteModel from '../models/favoriteModel.js'
 
-class favoriteController {
+class FavoriteController {
     // Fetch favorited projects for a specific user using raw IDs
     static async getFavoriteProjects (req, res) {
         try {
@@ -9,7 +9,7 @@ class favoriteController {
             const { search, category_id, sort, limit, userId } = req.query;
 
             // Execute the optimized project model catalog join using the provided user ID
-            const favoriteProjects = await projectModel.getProjectsFiles({
+            const favoriteProjects = await ProjectModel.getProjectsFiles({
                 search: search || null,
                 category_id: category_id || null,
                 sort: sort || 'newest',
@@ -39,7 +39,7 @@ class favoriteController {
             const { userId, projectId } = req.body; // Guaranteed to be valid positive numbers by middleware
 
             // Verify if the link already exists to avoid database duplicate errors
-            const isAlreadyFavorited = await favoriteModel.checkExists(Number(userId), Number(projectId));
+            const isAlreadyFavorited = await FavoriteModel.checkExists(Number(userId), Number(projectId));
 
             if (isAlreadyFavorited) {
                 return res.status(409).json({
@@ -48,7 +48,7 @@ class favoriteController {
                 });
             }
 
-            await favoriteModel.addFavorite(Number(userId), Number(projectId));
+            await FavoriteModel.addFavorite(Number(userId), Number(projectId));
 
             return res.status(201).json({
                 success: true,
@@ -76,7 +76,7 @@ class favoriteController {
                 });
             }
 
-            await favoriteModel.removeFavorite(Number(userId), Number(projectId));
+            await FavoriteModel.removeFavorite(Number(userId), Number(projectId));
 
             return res.status(200).json({
                 success: true,
@@ -94,4 +94,4 @@ class favoriteController {
     }
 };
 
-export default favoriteController;
+export default FavoriteController;

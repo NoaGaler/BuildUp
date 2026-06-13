@@ -25,13 +25,6 @@ class ProfessionalReviewController {
             const { professionalId } = req.params;
             const { user_id, rating, review_text } = req.body;
 
-            if (!user_id || !rating || !review_text) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Validation failed: user_id, rating, and review_text are required."
-                });
-            }
-
             await professionalReviewModel.createReview({
                 user_id,
                 professional_id: professionalId,
@@ -45,6 +38,25 @@ class ProfessionalReviewController {
             });
         } catch (error) {
             console.error("Error inside addReview:", error);
+            return res.status(500).json({ success: false, error: error.message });
+        }
+    }
+
+    // Update a professional review
+    static async editReview(req, res) {
+        try {
+            const { reviewId } = req.params;
+            const { rating, review_text } = req.body;
+
+            const success = await professionalReviewModel.updateReview(reviewId, rating, review_text);
+
+            if (!success) {
+                return res.status(404).json({ success: false, message: "Review not found or no changes made." });
+            }
+
+            return res.status(200).json({ success: true, message: "Review updated successfully." });
+        } catch (error) {
+            console.error("Error inside editReview:", error);
             return res.status(500).json({ success: false, error: error.message });
         }
     }
@@ -65,7 +77,6 @@ class ProfessionalReviewController {
             return res.status(500).json({ success: false, error: error.message });
         }
     }
-
 }
 
 export default ProfessionalReviewController;

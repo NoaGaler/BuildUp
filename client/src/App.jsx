@@ -23,18 +23,10 @@ import JobsPage from './components/Jobs/JobsPage/JobsPage.jsx';
 import JobDetails from './components/Jobs/JobDetails/JobDetails.jsx';
 import JobForm from './components/Jobs/JobForm/JobForm.jsx';
 
-// import ProfessionalOwnerRoute from './components/Profiles/ProfessionalOwnerRoute.jsx';
 import Professionals from './components/Profiles/Professionals.jsx';
 import ProfessionalsPage from './components/Profiles/ProfessionalsPage/ProfessionalsPage.jsx';
-// import ProfessionalProfilePage from './components/Profiles/ProfessionalProfilePage.jsx';
-// import ProfessionalView from './components/Profiles/ProfessionalView.jsx';
-// import ProfessionalEdit from './components/Profiles/ProfessionalEdit.jsx';
 import ProfilePage from './components/Profiles/ProfilePage/ProfilePage.jsx';
 import ProfileEdit from './components/Profiles/ProfileEdit/ProfileEdit.jsx';
-
-// import ClientProfilePage from './components/ClientProfile/ClientProfilePage.jsx';
-// import ClientView from './components/ClientProfile/ClientView.jsx';
-// import ClientEdit from './components/ClientProfile/ClientEdit.jsx';
 
 import './App.css';
 import Logo from './components/UI/Logo.jsx';
@@ -44,55 +36,48 @@ function App() {
     <Router>
       <AuthProvider>
         <CategoryProvider>
-          <Routes>
+          <ProjectProvider>
+            <Routes>
 
-            {/* Auth Routes */}
-            <Route path="/login" element={<PublicRoute> <LoginForm /> </PublicRoute>} />
-            <Route path="/register" element={<PublicRoute> <Register /> </PublicRoute>} />
+              {/* Auth Routes */}
+              <Route path="/login" element={<PublicRoute> <LoginForm /> </PublicRoute>} />
+              <Route path="/register" element={<PublicRoute> <Register /> </PublicRoute>} />
 
-            <Route path="/" element={<MainLayout />}>
-              <Route index element={<HomePage />} />
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<HomePage />} />
 
-              {/* Projects Routes */}
-              <Route path="/projects" element={<Projects />}>
-                <Route index element={<ProjectsPage />} />
-                <Route path="favorites" element={<ProjectsPage />} />
-                <Route path="new" element={<CreateProjectPage />} />
-                <Route path=":id" element={<ProjectDetails />} />
-                <Route path=":id/edit" element={<EditProjectPage />} />
+                {/* Projects Routes */}
+                <Route path="/projects" element={<Projects />}>
+                  <Route index element={<ProjectsPage />} />
+                  <Route path="favorites" element={<ProjectsPage />} />
+                  <Route path="new" element={<CreateProjectPage />} />
+                  <Route path=":id" element={<ProjectDetails />} />
+                  <Route path=":id/edit" element={<EditProjectPage />} />
+                </Route>
+
+                {/* jobs Routes */}
+                <Route path="/jobs" element={<Jobs />}>
+                  <Route path="" element={<JobsPage />}>
+                    <Route path=":id" element={<JobDetails />} />
+                    <Route path="edit/:id" element={<JobForm />} />
+                  </Route>
+                  <Route path="new" element={<JobForm />} />
+                </Route>
+
+                <Route path="/" element={<Professionals />}>
+                  <Route path="professionals" element={<ProfessionalsPage />} />
+                  <Route path="profile/:id" element={<ProfilePage />} />
+                  <Route path="profile/:id/edit" element={<ProfileEdit />} />
+                </Route>
+
               </Route>
 
-              {/* jobs Routes */}
-              <Route path="/jobs" element={<Jobs />}>
-                <Route path="" element={<JobsPage />}>
-                  <Route path=":id" element={<JobDetails />} />
-                  <Route path="edit/:id" element={<JobForm />} />
-                </Route>
-                <Route path="new" element={<JobForm />} />
-              </Route>
-
-              {/* <Route path="professionals" element={<Professionals />}>
-                <Route index element={<ProfessionalsPage />} />
-                <Route path=":id" element={<ProfessionalProfilePage />}>
-                  <Route index element={<ProfessionalView />} />
-                </Route>
-                <Route path=":id/edit" element={<ProfessionalEdit />} />
-              </Route> */}
-
-              {/* <Route path="/" element={<Professionals />}>
-                <Route path="professionals" element={<ProfessionalsPage />} />
-                <Route path="profile/:id" element={<ProfilePage />} />
-                <Route path="profile/:id/edit" element={<ProfileEdit />} />
-              </Route> */}
-
-          </Route>
-
-          {/* Default Route */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-
-      </CategoryProvider>
-    </AuthProvider>
+              {/* Default Route */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </ProjectProvider>
+        </CategoryProvider>
+      </AuthProvider>
     </Router >
   );
 }

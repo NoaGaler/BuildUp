@@ -1,13 +1,9 @@
-
-// server/controllers/jobController.js
 import Job from '../models/jobModel.js';
 
-const jobController = {
-    /**
-     * Get jobs with dynamic server-side filtration parameters
-     * Route: GET /api/jobs?search=...&sort=...&category_id=...
-     */
-    getAllJobs: async (req, res) => {
+class JobController {
+    
+    // Get jobs with dynamic server-side filtration parameters
+    static async getAllJobs (req, res) {
         try {
             const filters = {
                 search: req.query.search || null,
@@ -23,13 +19,10 @@ const jobController = {
                 message: 'Internal server error while fetching job posts.'
             });
         }
-    },
+    };
 
-    /**
-     * Get a single job post by ID for the detail view
-     * Route: GET /api/jobs/:id
-     */
-    getJobById: async (req, res) => {
+    // Get a single job post by ID for the detail view
+    static async getJobById (req, res) {
         try {
             const jobId = req.params.id;
             const job = await Job.getJobById(jobId);
@@ -44,13 +37,10 @@ const jobController = {
                 message: 'Internal server error while fetching job details.'
             });
         }
-    },
+    };
 
-    /**
-     * Create a brand new job post
-     * Route: POST /api/jobs
-     */
-    createNewJobPost: async (req, res) => {
+    // Create a brand new job post
+    static async createNewJobPost (req, res) {
         try {
             const jobData = req.body;
             const newJobId = await Job.insertJob(jobData);
@@ -67,13 +57,10 @@ const jobController = {
                 message: "Internal server registry error."
             });
         }
-    },
+    };
 
-    /**
-     * Update an existing job post with role-based access validation
-     * Route: PUT /api/jobs/:id
-     */
-    updateJob: async (req, res) => {
+    // Update an existing job post with role-based access validation
+    static async updateJob (req, res) {
         try {
             const jobId = req.params.id;
             const { userId, ...updatedData } = req.body;
@@ -122,13 +109,10 @@ const jobController = {
             console.error('Error in updateJob controller:', error);
             return res.status(500).json({ success: false, message: 'Internal server update error.' });
         }
-    },
+    }
 
-    /**
-     * Delete an existing job post with role-based access validation
-     * Route: DELETE /api/jobs/:id?userId=...&role=...
-     */
-    deleteJob: async (req, res) => {
+    // Delete an existing job post with role-based access validation
+    static async deleteJob (req, res) {
         try {
             const jobId = req.params.id;
             const userId = req.query.userId;
@@ -166,4 +150,4 @@ const jobController = {
     }
 };
 
-export default jobController;
+export default JobController;

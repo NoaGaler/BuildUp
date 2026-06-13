@@ -19,7 +19,7 @@
     position: relative;
     width: 100%;
     height: 230px;
-    background-color: #F7F7F4; /* Base earth-tone warm foundation texture placeholder */
+    background-color: #F7F7F4;
     overflow: hidden;
 }
 
@@ -41,7 +41,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(85, 122, 97, 0.15); /* Integrated safe sage green overlay color matrix tint */
+    background: rgba(85, 122, 97, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +51,7 @@
 
 .mask-action-trigger-badge {
     background-color: #FFFFFF;
-    color: #222222; /* Charcoal grey primary dark color variant text styling */
+    color: #222222;
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -71,33 +71,32 @@
 }
 
 .card-display-title {
-    color: #222222; /* Pure charcoal primary header text track font metrics */
+    color: #222222;
     font-size: 1.15rem;
-    font-weight: 700; /* Bold/Black weight configurations rules styles */
+    font-weight: 700;
     margin: 0;
     line-height: 1.4;
 }
 
-/* Footer Section Creator Info Attributes Blocks Row Layout styles template */
 .card-creator-profile-footer {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-top: auto;
     padding-top: 14px;
-    border-top: 1px solid #F7F7F4; /* Thin separation layer line design */
+    border-top: 1px solid #F7F7F4;
 }
 
 .creator-profile-avatar-img, .creator-avatar-icon-fallback-box {
     width: 42px;
     height: 42px;
-    border-radius: 50%; /* Rounded standard circle frames tracking profiles assets images */
+    border-radius: 50%;
     object-fit: cover;
 }
 
 .creator-avatar-icon-fallback-box {
     background-color: #F7F7F4;
-    color: #60665D; /* Standard secondary gray-olive / deep khaki palette definitions color selection */
+    color: #60665D;
     display: flex;
     align-items: center;
     justify-content: center;

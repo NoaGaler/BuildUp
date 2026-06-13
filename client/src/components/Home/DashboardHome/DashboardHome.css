@@ -130,6 +130,30 @@
 }
 
 /* =========================
+   JOBS GRID DASHBOARD
+========================= */
+.dashboard-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.dashboard-loading-message,
+.dashboard-empty-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 40px;
+    background-color: rgba(85, 122, 97, 0.04);
+    border-radius: 24px;
+    border: 1px dashed rgba(85, 122, 97, 0.25);
+    color: #557A61;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 

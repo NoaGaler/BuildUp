@@ -131,14 +131,6 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                     <div className="form-field-wrapper-label">
                         <span>Workspace Category Section *</span>
                         <div className="form-category-cards-selector-grid">
-                            {/* {allowedCategories.map(cat => (
-                                <CategoryCard
-                                    key={cat.id}
-                                    categoryId={cat.id}
-                                    isSelected={Number(categoryId) === Number(cat.id)}
-                                    onClick={handleCategorySelect}
-                                />
-                            ))} */}
                             {user.role === 'admin' ?
                                 (categories.map(cat => (
                                     <CategoryCard
@@ -146,6 +138,7 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                                         categoryId={cat.id}
                                         isSelected={Number(categoryId) === Number(cat.id)}
                                         onClick={handleCategorySelect}
+                                        variant="pill"
                                     />
                                 )))
                                 :
@@ -155,6 +148,7 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                                         categoryId={cat.id}
                                         isSelected={Number(categoryId) === Number(cat.id)}
                                         onClick={handleCategorySelect}
+                                        variant="pill"
                                     />
                                 )))}
                         </div>
@@ -170,11 +164,11 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                                 <div key={index} className={`media-input-row-card ${index === 0 ? 'primary-cover-slot' : ''}`}>
                                     <div className="row-badge-indicator">Slot {index + 1} {index === 0 && "(Primary Cover Image)"}</div>
                                     <div className="row-inputs-grid-layout">
-                                        <label className="grid-input-cell">
+                                        <label className="grid-input-cell flex-grow-three">
                                             <span>File Name Only</span>
                                             <input type="text" value={item.url} onChange={(e) => handleMediaFieldChange(index, 'url', e.target.value)} placeholder="e.g., penthouse_view_1" required />
                                         </label>
-                                        <label className="grid-input-cell flex-grow-three">
+                                        <label className="grid-input-cell">
                                             <span>Extension</span>
                                             <input type="text" value={item.ext} onChange={(e) => handleMediaFieldChange(index, 'ext', e.target.value)} placeholder="png" required />
                                         </label>

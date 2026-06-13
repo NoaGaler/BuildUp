@@ -1,36 +1,3 @@
-// // src/components/Jobs/Jobs.jsx
-// import React from 'react';
-// import { Outlet, Navigate, useLocation } from 'react-router-dom';
-// import { JobProvider } from '../../context/JobContext';
-// import { useAuth } from '../../context/authContext';
-// import UnauthorizedView from '../Jobs/UnauthorizedView/UnauthorizedView.jsx';
-
-// const Jobs = () => {
-//     const { user } = useAuth(); 
-//     const location = useLocation();
-
-//     // Security check: If someone tries to reach the creation path and is not logged in
-//     if (location.pathname.endsWith('/new') && !user) {
-//         return <Navigate to="/login" replace state={{ from: location }} />;
-//     }
-
-//     // If the user is a guest, render the clean fallback view component
-//     if (!user) {
-//         return <UnauthorizedView />;
-//     }
-
-//     return (
-//         <JobProvider>
-//             <Outlet />
-//         </JobProvider>
-//     );
-// };
-
-// export default Jobs;
-
-
-
-// src/components/Jobs/Jobs.jsx
 import React, { useEffect, useState } from 'react';
 import { Outlet, Navigate, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { JobProvider, useJobs } from '../../context/JobContext';

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FiX, FiMapPin, FiInfo, FiDollarSign, FiUser, FiMail, FiPhone, FiEdit3, FiTrash2, FiLayers } from 'react-icons/fi';
-import * as MdIcons from 'react-icons/md';
-import * as FaIcons from "react-icons/fa6";
+import { FiX, FiMapPin, FiInfo, FiDollarSign, FiUser, FiMail, FiPhone, FiEdit3, FiTrash2 } from 'react-icons/fi';
 
 import { useAuth } from '../../../context/authContext';
 import { useJobs } from '../../../context/JobContext';
 import Modal from '../../UI/Modal/Modal.jsx';
+import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx'; 
 
 import './JobDetails.css';
 
@@ -22,7 +21,6 @@ const JobDetails = ({ onClose }) => {
     const [loading, setLoading] = useState(true);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-    // The effect of retrieving individual job data based on the ID from the URL
     useEffect(() => {
         let isMounted = true;
 
@@ -60,19 +58,11 @@ const JobDetails = ({ onClose }) => {
         return null;
     }
 
-    const { client_id, title, description, budget, category_name, category_icon, client_name, client_image, client_email } = job;
+    const { client_id, title, description, budget, category_name, client_name, client_image, client_email } = job;
     const finalAvatarImg = client_image ? `${SERVER_URL}${client_image}` : null;
 
     const isMyJob = user?.id && Number(client_id) === Number(user.id);
     const isAdmin = user?.role === 'admin';
-
-    // Decoding the dynamic category icon
-    let IconComponent = FiLayers;
-    if (category_icon && category_icon.startsWith('Md')) {
-        IconComponent = MdIcons[category_icon] || FiLayers;
-    } else if (category_icon && category_icon.startsWith('Fa')) {
-        IconComponent = FaIcons[category_icon] || FiLayers;
-    }
 
     // Custom delete modal management functions
     const handleDeleteClick = () => {
@@ -99,10 +89,9 @@ const JobDetails = ({ onClose }) => {
 
             {/* Close button and category tag */}
             <div className="job-details-header-action-row">
-                <span className="details-category-badge">
-                    <IconComponent className="details-category-icon" size={14} />
-                    {category_name}
-                </span>
+                
+                <CategoryCard categoryName={category_name} isSelected={true} variant="pill" />
+                
                 <button className="details-close-btn-circle" onClick={() => navigate(-1)} title="Close Preview">
                     <FiX size={16} />
                 </button>

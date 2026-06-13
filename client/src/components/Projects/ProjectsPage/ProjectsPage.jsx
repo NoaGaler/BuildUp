@@ -17,7 +17,6 @@ const ProjectsPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // בדיקה האם הניתוב הנוכחי הוא עמוד המועדפים
     const isFavoritesPage = location.pathname.includes('/favorites');
 
     const { search, sortBy, category, updateFilters } = useFilterParams();
@@ -28,10 +27,8 @@ const ProjectsPage = () => {
 
     const [limit, setLimit] = useState(12);
 
-    // בדיקה האם המשתמש המחובר הוא בעל מקצוע מורשה או מנהל
     const isProfessional = user && (user.role === 'professional' || user.role === 'admin');
 
-    // השמת הנתונים הדינמיים בהתאם לסוג העמוד (מועדפים או כללי)
     const activeProjectsArray = isFavoritesPage ? favoriteProjects : projects;
     const activeLoadingState = isFavoritesPage ? loadingFavorites : loading;
     const activeErrorState = isFavoritesPage ? favoritesError : error;
@@ -43,7 +40,7 @@ const ProjectsPage = () => {
         { id: 'title', name: 'A-Z', icon: <FiCheck /> }
     ];
 
-    // שליפת נתונים דינמית מה-Context המתאים בכל שינוי של פילטר או ניתוב
+    // Dynamic data retrieval from the Context
     useEffect(() => {
         const activeCompiledQuery = {
             search: search || null,
@@ -59,7 +56,6 @@ const ProjectsPage = () => {
         }
     }, [search, sortBy, category, limit, isFavoritesPage, fetchProjects, fetchFavoriteProjects]);
 
-    // איפוס מגבלת הכמות בכל שינוי סינון
     useEffect(() => {
         setLimit(12);
     }, [search, sortBy, category]);

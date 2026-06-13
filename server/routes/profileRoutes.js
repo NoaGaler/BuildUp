@@ -1,18 +1,11 @@
 import express from 'express';
-import profileController from '../controllers/ProfileController.js';
-import { validateProfileUpdate } from '../middleware/professionalValidation.js';
+import ProfileController from '../controllers/profileController.js';
+import ProfileValidation from '../middleware/profileValidation.js';
 
 const router = express.Router();
 
-// router.get('/', profileController.getAllProfessionals);
-// router.get('/:id', profileController.getProfessionalProfile);
-// router.patch('/profile/:id', validateProfileUpdate, profileController.updateProfile);
-// router.get('/client/:id', profileController.getClientProfile);
-// router.patch('/client/:id', profileController.updateClientProfile);
-
-
-router.get('/', profileController.getAllProfessionals);
-router.get('/:id', profileController.getProfile);
-router.patch('/:id', validateProfileUpdate, profileController.updateProfile);
+router.get('/', ProfileController.getAllProfessionals);
+router.get('/:id', ProfileController.getProfile);
+router.patch('/:id', ProfileValidation.update, ProfileController.updateProfile);
 
 export default router;

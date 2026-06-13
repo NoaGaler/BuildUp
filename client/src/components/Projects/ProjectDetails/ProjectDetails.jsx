@@ -10,6 +10,7 @@ import { useProjects } from '../../../context/ProjectContext';
 import { useFavorites } from '../../../context/FavoriteContext';
 
 import CommentList from '../Comments/CommentList/CommentList.jsx';
+import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 import Modal from '../../UI/Modal/Modal.jsx';
 import './ProjectDetails.css';
 
@@ -58,7 +59,7 @@ const ProjectDetails = () => {
     if (error) return <div className="details-status-msg error">{error}</div>;
     if (!project) return null;
 
-    const { title, description, professional_id, professional_name, professional_image, professional_tagline, mediaFiles = [] } = project;
+    const { title, description, professional_id, professional_name, professional_image, professional_tagline, mediaFiles = [], category_id } = project;
 
     const activeMedia = mediaFiles[currentMediaIndex];
     const showLeftArrow = currentMediaIndex > 0;
@@ -173,9 +174,11 @@ const ProjectDetails = () => {
                 {/* Text Metadata Panel */}
                 <div className="details-text-metadata-panel">
                     <div className="details-header-title-row">
-
-
                         <div className="details-actions-wrapper-right">
+                            <div>
+                                {category_id && <CategoryCard categoryId={category_id} isSelected={true} variant="pill" />}
+                            </div>
+
                             {/* Condition rule: The interactive heart toggle icon only renders if user profile session exists */}
                             {user && (
                                 <button

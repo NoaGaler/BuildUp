@@ -4,6 +4,7 @@ import { FiUser, FiClock } from 'react-icons/fi';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 import { useJobs } from '../../../context/JobContext';
+import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 import './JobCard.css';
 
 const SERVER_URL = 'http://localhost:5000';
@@ -15,7 +16,7 @@ const JobCard = ({ id, client_id, category_id, title, budget, category_name, cli
     const finalAvatarImg = client_image ? `${SERVER_URL}${client_image}` : null;
 
     const handleCardClick = (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         navigate(`/jobs/${id}`);
     };
 
@@ -24,7 +25,7 @@ const JobCard = ({ id, client_id, category_id, title, budget, category_name, cli
             <div className="card-body-wrapper">
 
                 <div className="card-category-badge-row">
-                    <span className="category-display-badge">{category_name}</span>
+                    <CategoryCard categoryName={category_name} variant="pill" />
 
                     <span className="card-time-posted">
                         <FiClock size={12} /> {formatRelativeTime(created_at)}
@@ -35,7 +36,7 @@ const JobCard = ({ id, client_id, category_id, title, budget, category_name, cli
 
                 <div className="card-creator-profile-footer">
                     <div className="creator-profile-identity" onClick={(e) => {
-                        e.stopPropagation(); 
+                        e.stopPropagation();
                         navigate(`/professionals/${client_id}`);
                     }}>
                         {finalAvatarImg ? (

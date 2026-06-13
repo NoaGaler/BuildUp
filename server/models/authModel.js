@@ -1,6 +1,6 @@
 import pool from '../config/db.js';
 
-class authModel {
+class AuthModel {
     // Checks if the email exists in the users table
     static async checkEmailExists(email) {
         const query = 'SELECT id FROM users WHERE email = ?';
@@ -134,4 +134,4 @@ class authModel {
     }
 }
 
-export default authModel;
+export default AuthModel;

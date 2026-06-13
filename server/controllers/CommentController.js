@@ -5,7 +5,6 @@ class CommentController {
     static async getCommentsByProject(req, res) {
         try {
             const { projectId } = req.params;
-            // המרה ל-Integer בטוחה: אם זה לא מספר, נגדיר ערך ברירת מחדל
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 5;
             const offset = (page - 1) * limit;

@@ -14,30 +14,20 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { user, logoutUser } = useAuth();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  
+
   const handleConfirmLogout = () => {
     logoutUser();
     setIsLogoutModalOpen(false);
   };
 
-  const handleProfileNavigation = () => {
-    if (!user) return;
-    
-    if (user.role === 'professional') {
-      navigate(`/professionals/${user.id}`);
-    } else {
-      navigate(`/profile/${user.id}`);
-    }
-  };
-
   return (
     <nav className="main-navbar">
       <div className="navbar-container">
-        
+
         {/* Right Zone: Logo */}
-          <div className="navbar-logo">
-            <Link to="/"><Logo width={120} height={40}/></Link>
-          </div>
+        <div className="navbar-logo">
+          <Link to="/"><Logo width={120} height={40} /></Link>
+        </div>
 
 
         {/* Center Zone: Core Navigation Links */}
@@ -60,8 +50,9 @@ const Navbar = () => {
         <div className="navbar-actions">
           {user ? (
             <div className="logged-in-wrapper">
-              
-              <div onClick={handleProfileNavigation}  className="user-profile-card" title="Go to Profile">
+
+              {/* <div onClick={handleProfileNavigation}  className="user-profile-card" title="Go to Profile"> */}
+              <div onClick={() => navigate(`/profile/${user.id}`)} className="user-profile-card" title="Go to Profile">
                 {user.profile_image_url ? (
                   <img src={`${BACKEND_URL}${user.profile_image_url}`} alt={user.name} className="navbar-avatar" />
                 ) : (
@@ -69,11 +60,11 @@ const Navbar = () => {
                 )}
                 <span className="navbar-username">{user.name}</span>
               </div>
-              
-              <button 
-                type="button" 
-                onClick={() => setIsLogoutModalOpen(true)} 
-                className="btn-logout-isolated" 
+
+              <button
+                type="button"
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="btn-logout-isolated"
                 title="Logout"
               >
                 <FiLogOut size={18} />

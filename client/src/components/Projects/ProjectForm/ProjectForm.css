@@ -110,23 +110,21 @@
 /* ==========================================================================
    4. FIXED COMPACT CATEGORY CARDS SELECTOR HORIZONTAL SCROLLBAR
    ========================================================================== */
-.form-category-cards-selector-grid {
-    display: flex;
+ .form-category-cards-selector-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center;
     gap: 12px;
-    padding: 12px 8px;
+    padding: 16px 12px;
     box-sizing: border-box;
-    width: 90%;
+    width: 100%;
     background-color: #F7F7F4;
     border-radius: 14px;
-
-    /* Horizontal inline scroll execution configuration blocks */
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
-    /* Kinetic scrolling physics implementation on iOS mobile viewports */
 }
 
-/* Custom minimal scrollbar stylings rules configuration */
 .form-category-cards-selector-grid::-webkit-scrollbar {
     height: 6px;
 }
@@ -137,7 +135,6 @@
 
 .form-category-cards-selector-grid::-webkit-scrollbar-thumb {
     background-color: rgba(85, 122, 97, 0.15);
-    /* Soft premium translucent sage green hue track */
     border-radius: 10px;
 }
 

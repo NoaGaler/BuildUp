@@ -1,8 +1,8 @@
 import pool from '../config/db.js';
 
-const Job = {
+class Job {
     // Fetch jobs with dynamic query filtration and sorting.
-    getAllJobs: async (filters) => {
+    static async getAllJobs (filters) {
         const { search, sort, category_id } = filters;
 
         let query = `
@@ -55,10 +55,10 @@ const Job = {
             console.error('Database error in getAllJobs model:', error);
             throw error;
         }
-    },
+    };
 
     // Fetch a single job post by its primary key ID
-    getJobById: async (id) => {
+    static async getJobById (id) {
         const query = `
             SELECT 
                 jp.id,
@@ -85,10 +85,10 @@ const Job = {
             console.error('Database error in getJobById model:', error);
             throw error;
         }
-    },
+    };
 
     // Insert a new job opportunity into the database registry
-    insertJob: async (jobData) => {
+    static async insertJob (jobData) {
         const query = `
             INSERT INTO job_posts (title, description, budget, category_id, client_id, created_at)
             VALUES (?, ?, ?, ?, ?, NOW());
@@ -108,10 +108,10 @@ const Job = {
             console.error("Database compilation error inside insertJob model:", error);
             throw error;
         }
-    },
+    };
 
     // Delete a job post from the database registry by its primary key ID
-    deleteJob: async (id) => {
+    static async deleteJob (id) {
         try {
             const query = `DELETE FROM job_posts WHERE id = ?`;
             const [result] = await pool.execute(query, [id]);
@@ -120,10 +120,10 @@ const Job = {
             console.error(`Database error inside Job.deleteJob for ID ${id}:`, error);
             throw error;
         }
-    },
+    };
 
     // Update an existing job registry row by its primary key ID
-    updateJob: async (id, jobData) => {
+    static async updateJob (id, jobData) {
         try {
             const query = `
                 UPDATE job_posts 
@@ -144,7 +144,7 @@ const Job = {
             console.error(`Database error inside Job.updateJob for ID ${id}:`, error);
             throw error;
         }
-    }
+    };
 };
 
 export default Job;

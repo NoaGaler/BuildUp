@@ -24,6 +24,13 @@ class ProfessionalReviewModel {
         const [result] = await db.query(query, [user_id, professional_id, rating, review_text]);
         return result.insertId;
     }
+
+    // Update an existing professional review
+    static async updateReview(reviewId, rating, reviewText) {
+        const query = `UPDATE professional_reviews SET rating = ?, review_text = ? WHERE id = ?`;
+        const [result] = await db.query(query, [rating, reviewText, reviewId]);
+        return result.affectedRows > 0;
+    }
     
     // Delete a specific professional review
     static async deleteReview(reviewId) {
