@@ -12,10 +12,8 @@ const ProfilePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
-
     const { getProfileData, getReviewsData, submitReviewData, editReviewData, deleteReviewData } = useProfiles();
 
-    // 🌟 Local State for the current viewed profile
     const [activeProfile, setActiveProfile] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -76,7 +74,7 @@ const ProfilePage = () => {
     };
 
     return (
-        <div className={'profile-page-master-container'}>
+        <div className="profile-page-master-container">
             <div className="sidebar-column-layout">
                 <button onClick={() => navigate(-1)} className="back-feed-pill">
                     <FiArrowLeft /> Go Back
