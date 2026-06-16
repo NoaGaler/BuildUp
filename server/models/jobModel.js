@@ -87,6 +87,18 @@ class JobModel {
         }
     };
 
+    // Fetch ONLY the client_id to verify ownership before updates/deletions
+    static async getJobOwnerId(jobId) {
+        const query = `SELECT client_id FROM job_posts WHERE id = ?`;
+        try {
+            const [rows] = await pool.execute(query, [jobId]);
+            return rows.length > 0 ? rows[0].client_id : null;
+        } catch (error) {
+            console.error('Database error in getJobOwnerId model:', error);
+            throw error;
+        }
+    };
+
     // Insert a new job opportunity into the database registry
     static async createJob(jobData) {
         const query = `
@@ -133,17 +145,6 @@ class JobModel {
             throw error;
         }
     };
-
-    static async getUserRole(userId) {
-        try {
-            const query = `SELECT role FROM users WHERE id = ?`;
-            const [rows] = await pool.execute(query, [userId]);
-            return rows.length > 0 ? rows[0].role : null;
-        } catch (error) {
-            console.error(`Database error inside Job.getUserRole for user ${userId}:`, error);
-            throw error;
-        }
-    }
 };
 
 export default JobModel;

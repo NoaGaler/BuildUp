@@ -24,8 +24,8 @@ class jobService {
         return response.data;
     };
 
-    static async deleteJob(id, userId) {
-        const response = await api.delete(`/jobs/${id}`, { params: { userId } });
+    static async deleteJob(id) {
+        const response = await api.delete(`/jobs/${id}`);
         return response.data;
 
     }

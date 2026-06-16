@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import AuthModel from '../models/authModel.js';
 
 class AuthController {
@@ -46,9 +47,16 @@ class AuthController {
                 email, password, name, role, phone, profile_image_url: finalProfileImageUrl, tag_line, bio, city, categoryIds
             });
 
+            const token = jwt.sign(
+                { id: user.id, role: user.role },
+                process.env.JWT_SECRET,
+                { expiresIn: process.env.JWT_EXPIRES_IN }
+            );
+
             return res.status(201).json({
                 success: true,
                 message: "Registration completed and profile created successfully.",
+                token: token,
                 user: {
                     id: userId,
                     name,
@@ -81,15 +89,23 @@ class AuthController {
             const user = await AuthModel.login(email);
 
             if (!user || !(await bcrypt.compare(password, user.password))) {
+
                 return res.status(401).json({
                     success: false,
                     message: "Invalid email or password credentials."
                 });
             }
 
+            const token = jwt.sign(
+                { id: user.id, role: user.role },
+                process.env.JWT_SECRET,
+                { expiresIn: process.env.JWT_EXPIRES_IN }
+            );
+
             res.status(200).json({
                 success: true,
                 message: "Login verified successfully.",
+                token: token,
                 user: {
                     id: user.id,
                     name: user.name,
@@ -107,10 +123,39 @@ class AuthController {
     }
 
     // Check Authentication Status
+    // static async checkAuthStatus(req, res) {
+    //     const { id } = req.params;
+    //     try {
+    //         const user = await AuthModel.findById(id);
+    //         if (!user) {
+    //             return res.status(404).json({
+    //                 isAuthenticated: false,
+    //                 message: "User context not found."
+    //             });
+    //         }
+
+    //         res.status(200).json({
+    //             isAuthenticated: true,
+    //             user: {
+    //                 id: user.id,
+    //                 name: user.name,
+    //                 role: user.role,
+    //                 profile_image_url: user.profile_image_url,
+    //                 categoryIds: user.categoryIds
+    //             }
+    //         });
+    //     } catch (error) {
+    //         res.status(500).json({
+    //             isAuthenticated: false,
+    //             message: "Failed to establish secure auth state check sync."
+    //         });
+    //     }
+    // }
     static async checkAuthStatus(req, res) {
-        const { id } = req.params;
         try {
-            const user = await AuthModel.findById(id);
+            const userIdFromToken = req.user.id;
+
+            const user = await AuthModel.findById(userIdFromToken);
             if (!user) {
                 return res.status(404).json({
                     isAuthenticated: false,
