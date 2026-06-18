@@ -35,10 +35,7 @@ const JobCard = ({ id, client_id, category_id, title, budget, category_name, cli
                 <h3 className="card-display-title">{title}</h3>
 
                 <div className="card-creator-profile-footer">
-                    <div className="creator-profile-identity" onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/professionals/${client_id}`);
-                    }}>
+                    <div className="creator-profile-identity">
                         {finalAvatarImg ? (
                             <img src={finalAvatarImg} alt={client_name} className="creator-profile-avatar-img" />
                         ) : (

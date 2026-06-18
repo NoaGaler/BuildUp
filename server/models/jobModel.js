@@ -69,7 +69,10 @@ class JobModel {
                 jp.category_id,
                 u.id AS client_id,
                 u.name AS client_name,
+                u.role AS client_role,
                 u.profile_image_url AS client_image,
+                u.email AS client_email,
+                u.phone AS client_phone,
                 c.name AS category_name,
                 c.icon_url AS category_icon
             FROM job_posts jp
