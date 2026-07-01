@@ -5,7 +5,7 @@ import { FiX, FiMapPin, FiInfo, FiDollarSign, FiUser, FiMail, FiPhone, FiEdit3, 
 import { useAuth } from '../../../context/authContext';
 import { useJobs } from '../../../context/JobContext';
 import Modal from '../../UI/Modal/Modal.jsx';
-import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx'; 
+import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 
 import './JobDetails.css';
 
@@ -58,7 +58,7 @@ const JobDetails = ({ onClose }) => {
         return null;
     }
 
-    const { client_id, title, description, budget, category_name, client_name, client_image, client_email } = job;
+    const { client_id, client_role, title, description, budget, category_name, client_name, client_image, client_email, client_phone } = job;
     const finalAvatarImg = client_image ? `${SERVER_URL}${client_image}` : null;
 
     const isMyJob = user?.id && Number(client_id) === Number(user.id);
@@ -89,9 +89,9 @@ const JobDetails = ({ onClose }) => {
 
             {/* Close button and category tag */}
             <div className="job-details-header-action-row">
-                
+
                 <CategoryCard categoryName={category_name} isSelected={true} variant="pill" />
-                
+
                 <button className="details-close-btn-circle" onClick={() => navigate(-1)} title="Close Preview">
                     <FiX size={16} />
                 </button>
@@ -100,14 +100,36 @@ const JobDetails = ({ onClose }) => {
             <h2 className="job-details-main-title">{title}</h2>
 
             {/* Floating customer card with contact information */}
-            <div className="job-details-client-float-card" onClick={() => navigate(`/profile/${client_id}`)}>
+            <div
+                className={client_role === 'professional' ? "job-details-client-float-card-link" : "job-details-client-float-card"}
+                onClick={client_role === 'professional' ? () => navigate(`/profile/${client_id}`) : undefined}
+            >
                 <div className="client-avatar-wrapper">
                     {finalAvatarImg ? (
                         <img src={finalAvatarImg} alt={client_name} className="client-float-avatar-img" />
                     ) : (
-                        <FiUser size={18} className="default-avatar-icon" />
+                        <FiUser size={25} className="default-avatar-icon" />
                     )}
-                    <h4 className="client-float-name">{client_name}</h4>
+                    <div className="client-float-info-box">
+                        <h4 className="client-float-name">
+                            {client_name}
+                        </h4>
+
+                        <div className="client-contact-channels-row">
+                            {client_email && (
+                                <a href={`mailto:${client_email}`} className="contact-link-badge" title="שלח מייל">
+                                    <FiMail size={14} className="contact-icon-custom" />
+                                    <span>{client_email}</span>
+                                </a>
+                            )}
+                            {client_phone && (
+                                <a href={`tel:${client_phone}`} className="contact-link-badge" title="חייג ללקוח">
+                                    <FiPhone size={14} className="contact-icon-custom" />
+                                    <span>{client_phone}</span>
+                                </a>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
 
