@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiSave, FiXCircle } from 'react-icons/fi';
 
-import { useCategories } from '../../../context/categoryContext';
+import { useCategories } from '../../../context/CategoryContext';
 import { useAuth } from '../../../context/authContext';
 import { useJobs } from '../../../context/JobContext';
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import ProfileController from '../controllers/profileController.js';
+import ProfileController from '../controllers/ProfileController.js';
 import ProfileValidation from '../middleware/profileValidation.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiSave, FiPlus, FiTrash2, FiXCircle } from 'react-icons/fi';
 
-import { useCategories } from '../../../context/categoryContext';
+import { useCategories } from '../../../context/CategoryContext';
 import { useAuth } from '../../../context/authContext';
 
 import CategoryCard from '../../UI/CategoryCard/CategoryCard';

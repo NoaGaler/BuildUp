@@ -1,6 +1,6 @@
 import express from 'express';
 import FavoriteController from '../controllers/favoriteController.js';
-import FavoriteValidation from '../middleware/favoriteValidation.js';
+import FavoriteValidation from '../middleware/FavoriteValidation.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();

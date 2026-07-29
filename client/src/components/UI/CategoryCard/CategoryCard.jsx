@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCategories } from '../../../context/categoryContext.jsx';
+import { useCategories } from '../../../context/CategoryContext.jsx';
 import * as MdIcons from 'react-icons/md';
 import * as FaIcons from "react-icons/fa6";
 import { FiLayers } from 'react-icons/fi';

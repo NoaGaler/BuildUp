@@ -9,7 +9,7 @@ import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 
 import './JobDetails.css';
 
-const SERVER_URL = 'http://localhost:5000';
+const SERVER_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
 
 const JobDetails = ({ onClose }) => {
     const navigate = useNavigate();

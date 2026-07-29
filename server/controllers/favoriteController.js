@@ -1,5 +1,5 @@
 import ProjectModel from '../models/projectModel.js';
-import FavoriteModel from '../models/favoriteModel.js'
+import FavoriteModel from '../models/FavoriteModel.js'
 
 class FavoriteController {
     // Fetch favorited projects for a specific user using raw IDs

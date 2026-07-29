@@ -3,8 +3,8 @@ import { FiMail, FiLock } from 'react-icons/fi';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { useAuth } from '../../../../context/authContext.jsx';
-import Modal from '../../../ui/Modal/Modal';
-import Logo from '../../../UI/Logo.jsx'
+import Modal from '../../../UI/Modal/Modal';
+import Logo from '../../../UI/logo.jsx'
 
 import './RegisterForm.css';
 

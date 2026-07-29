@@ -14,7 +14,7 @@ const CommentItem = ({ comment, projectId }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editText, setEditText] = useState(comment.comment_text);
 
-    const SERVER_URL = 'http://localhost:5000';
+    const SERVER_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
 
     // Only allow editing/deleting if the logged-in user matches the comment owner
     const isOwner = user && (Number(user.id) === Number(comment.user_id) || user.role === 'admin' );

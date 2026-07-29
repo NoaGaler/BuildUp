@@ -5,7 +5,7 @@ import { FiEdit2, FiPhone, FiMail, FiUser, FiStar } from 'react-icons/fi';
 import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 import './ProfileDetails.css';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
 
 const ProfileDetails = ({ profile, isOwnProfile }) => {
     const navigate = useNavigate();

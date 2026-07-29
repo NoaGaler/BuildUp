@@ -1,5 +1,5 @@
 import express from 'express';
-import ProfessionalReviewController from '../controllers/professionalReviewController.js';
+import ProfessionalReviewController from '../controllers/ProfessionalReviewController.js';
 import ProfessionalReviewValidation from '../middleware/professionalReviewValidation.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 

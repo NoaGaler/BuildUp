@@ -5,7 +5,7 @@ import { FiExternalLink, FiUser } from 'react-icons/fi';
 import CategoryCard from '../../UI/CategoryCard/CategoryCard';
 import './ProjectCard.css';
 
-const SERVER_URL = 'http://localhost:5000';
+const SERVER_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
 
 const ProjectCard = ({ id, title, cover_image_url, professional_id, professional_name, professional_image, professional_tagline, category_id }) => {
     const navigate = useNavigate();

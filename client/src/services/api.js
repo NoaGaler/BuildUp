@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a centralized Axios instance with default configurations
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io/api',
     headers: {
         'Content-Type': 'application/json'
     }

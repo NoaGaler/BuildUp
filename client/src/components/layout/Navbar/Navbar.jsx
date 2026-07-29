@@ -4,12 +4,12 @@ import { FiMenu, FiHome, FiFolder, FiHeart, FiUsers, FiBriefcase, FiLogOut, FiUs
 
 import { useAuth } from '../../../context/authContext.jsx';
 
-import Logo from '../../UI/Logo.jsx';
+import Logo from '../../UI/logo.jsx';
 import Modal from '../../UI/Modal/Modal.jsx';
 
 import './Navbar.css';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
 
 const Navbar = () => {
   const navigate = useNavigate();

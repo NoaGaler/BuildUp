@@ -1,5 +1,5 @@
 import express from 'express';
-import ProjectController from '../controllers/projectController.js';
+import ProjectController from '../controllers/ProjectController.js';
 import ProjectValidation from '../middleware/projectValidation.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 

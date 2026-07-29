@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCategories } from '../../../context/categoryContext';
+import { useCategories } from '../../../context/CategoryContext';
 import CategoryCard from '../CategoryCard/CategoryCard';
 import './CategoryList.css';
 

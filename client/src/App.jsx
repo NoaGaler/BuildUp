@@ -2,14 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import { AuthProvider } from './context/authContext.jsx';
-import { CategoryProvider } from './context/categoryContext.jsx';
+import { CategoryProvider } from './context/CategoryContext.jsx';
 import { ProjectProvider } from './context/ProjectContext.jsx';
 
-import PublicRoute from './components/Auth/PublicRoute.jsx';
-import LoginForm from './components/Auth/Login/LoginForm';
-import Register from './components/Auth/Register/Register.jsx';
+import PublicRoute from './components/auth/PublicRoute.jsx';
+import LoginForm from './components/auth/Login/LoginForm.jsx';
+import Register from './components/auth/Register/Register.jsx';
 
-import MainLayout from './components/Layout/MainLayout/MainLayout';
+import MainLayout from './components/layout/MainLayout/MainLayout.jsx';
 import HomePage from './components/Home/HomePage.jsx'
 
 import Projects from './components/Projects/Projects.jsx'
@@ -29,7 +29,7 @@ import ProfilePage from './components/Profiles/ProfilePage/ProfilePage.jsx';
 import ProfileEdit from './components/Profiles/ProfileEdit/ProfileEdit.jsx';
 
 import './App.css';
-import Logo from './components/UI/Logo.jsx';
+import Logo from './components/UI/logo.jsx';
 
 function App() {
   return (

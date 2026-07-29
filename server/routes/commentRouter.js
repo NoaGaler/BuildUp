@@ -1,6 +1,6 @@
 import express from 'express';
-import CommentController from '../controllers/commentController.js';
-import CommentValidation from '../middleware/commentValidation.js';
+import CommentController from '../controllers/CommentController.js';
+import CommentValidation from '../middleware/CommentValidation.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();

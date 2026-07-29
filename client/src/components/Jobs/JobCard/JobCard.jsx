@@ -7,7 +7,7 @@ import { useJobs } from '../../../context/JobContext';
 import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 import './JobCard.css';
 
-const SERVER_URL = 'http://localhost:5000';
+const SERVER_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
 
 const JobCard = ({ id, client_id, category_id, title, budget, category_name, client_name, client_image, created_at, isActive, onRefresh }, ShowManagement) => {
     const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import CategoryModel from '../models/CategoryModel.js';
+import CategoryModel from '../models/categoryModel.js';
 
 class CategoryController {
     // get all categories

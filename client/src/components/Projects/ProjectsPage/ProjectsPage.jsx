@@ -4,7 +4,7 @@ import { FiClock, FiTrendingUp, FiCheck, FiFolderPlus, FiHeart } from 'react-ico
 import { FaHeart } from "react-icons/fa";
 
 import { useFilterParams } from '../../../Hooks/useFilterParams.js';
-import { useCategories } from '../../../context/categoryContext.jsx';
+import { useCategories } from '../../../context/CategoryContext.jsx';
 import { useProjects } from '../../../context/ProjectContext';
 import { useFavorites } from '../../../context/FavoriteContext';
 import { useAuth } from '../../../context/authContext.jsx';

@@ -4,12 +4,12 @@ import { FiMapPin, FiStar, FiHome, FiLayers, FiCompass, FiUser, FiCpu, FiGrid } 
 import * as MdIcons from 'react-icons/md';
 import * as FaIcons from "react-icons/fa6";
 
-import { useCategories } from '../../../context/categoryContext';
+import { useCategories } from '../../../context/CategoryContext';
 import { useAuth } from '../../../context/authContext';
 
 import './ProfessionalCard.css';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
 
 const ProfessionalCard = ({ professional }) => {
     const navigate = useNavigate();
