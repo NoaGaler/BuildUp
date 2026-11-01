@@ -23,27 +23,19 @@ const EditProjectPage = () => {
                 if (result.success && result.data) {
                     const raw = result.data;
 
-                    const processedMedia = (raw.mediaFiles || []).map(m => {
-                        const fullUrl = m.media_url || '';
-                        const lastSlash = fullUrl.lastIndexOf('/');
-                        const filenameWithExt = lastSlash !== -1 ? fullUrl.substring(lastSlash + 1) : fullUrl;
-
-                        // Split explicitly at the absolute trailing file format dot location
-                        const lastDot = filenameWithExt.lastIndexOf('.');
-
-                        return {
-                            id: m.id,
-                            url: lastDot !== -1 ? filenameWithExt.substring(0, lastDot) : filenameWithExt,
-                            ext: lastDot !== -1 ? filenameWithExt.substring(lastDot + 1) : 'png'
-                        };
-                    });
+                    const processedMedia = (raw.mediaFiles || []).map(m => ({
+                        id: m.id,
+                        media_url: m.media_url || '',
+                        media_type: m.media_type || 'image',
+                        mimetype: `${m.media_type || 'image'}/*`
+                    }));
 
                     // Isolate editable fields metrics exclusively to keep presentation forms light and isolated
                     const cleanPayload = {
                         title: raw.title || '',
                         description: raw.description || '',
                         category_id: raw.category_id || '',
-                        mediaItems: processedMedia.length > 0 ? processedMedia : [{ url: '', ext: 'png' }]
+                        mediaItems: processedMedia.length > 0 ? processedMedia : [{ id: null, media_url: '', media_type: 'image', mimetype: '' }]
                     };
 
                     setSanitizedData(cleanPayload);
@@ -62,21 +54,12 @@ const EditProjectPage = () => {
 
     // Packaging the data according to the server and sending it
     const handleEditSubmit = async (formData, processedMediaArray, trackingFlags) => {
-        const getMimetype = (ext) => {
-            const cleanExt = ext.toLowerCase().trim();
-            if (cleanExt === 'png') return 'image/png';
-            if (cleanExt === 'jpg' || cleanExt === 'jpeg') return 'image/jpeg';
-            if (cleanExt === 'mp4') return 'video/mp4';
-            if (cleanExt === 'mp3') return 'audio/mpeg';
-            return `image/${cleanExt}`;
-        };
-
         const convertedMediaItems = processedMediaArray.map(m => {
             return {
                 id: m.id || null,
                 media_type: m.media_type,
                 media_url: m.media_url,
-                mimetype: getMimetype(m.ext || 'png'),
+                mimetype: m.mimetype || `${m.media_type || 'image'}/*`,
                 originalName: m.originalName || ''
             };
         });

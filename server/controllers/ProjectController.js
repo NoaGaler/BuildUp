@@ -238,8 +238,10 @@ class ProjectController {
             if (file.mimetype.startsWith('video/')) mediaType = 'video';
             else if (file.mimetype.startsWith('audio/')) mediaType = 'audio';
 
+            // Files uploaded to cloud storage already carry their full public URL
+            const isCloudUrl = typeof file.media_url === 'string' && /^https?:\/\//.test(file.media_url);
             const targetFolder = folderMap[mediaType];
-            const mediaUrl = `/uploads/projects/${targetFolder}/${file.originalName}`;
+            const mediaUrl = isCloudUrl ? file.media_url : `/uploads/projects/${targetFolder}/${file.originalName}`;
 
             return {
                 media_type: mediaType,

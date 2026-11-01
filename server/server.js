@@ -10,6 +10,7 @@ import commentRouter from './routes/commentRouter.js';
 import jobRoutes from './routes/jobRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import professionalReviewRoutes from './routes/professionalReviewRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -34,6 +35,7 @@ app.use('/api/comments', commentRouter);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/profiles', profileRoutes);
 app.use('/api/reviews', professionalReviewRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

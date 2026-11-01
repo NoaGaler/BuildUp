@@ -6,6 +6,7 @@ import { useProfiles } from '../../../context/ProfilesContext.jsx';
 
 import CategoryList from '../../UI/CategoryList/CategoryList.jsx';
 import Modal from '../../UI/Modal/Modal.jsx';
+import MediaUploader from '../../UI/MediaUploader/MediaUploader.jsx';
 import './ProfileEdit.css';
 
 const ProfileEdit = () => {
@@ -30,9 +31,9 @@ const ProfileEdit = () => {
         city: '',
         tagline: '',
         bio: '',
-        profile_image_name: '',
-        profile_image_ext: 'jpg'
+        profile_image_url: ''
     });
+    const [imageUploading, setImageUploading] = useState(false);
 
     // Retrieving user data
     useEffect(() => {
@@ -46,29 +47,13 @@ const ProfileEdit = () => {
 
                     const imagePath = profileData.profile_image_url || profileData.profile_image || '';
 
-                    let extractedName = '';
-                    let extractedExt = 'jpg';
-
-                    if (imagePath) {
-                        const imageNameFull = imagePath.split(/[\/\\]/).pop();
-                        const lastDotIndex = imageNameFull.lastIndexOf('.');
-
-                        if (lastDotIndex !== -1) {
-                            extractedName = imageNameFull.substring(0, lastDotIndex);
-                            extractedExt = imageNameFull.substring(lastDotIndex + 1);
-                        } else {
-                            extractedName = imageNameFull;
-                        }
-                    }
-
                     setFormData({
                         name: profileData.name || '',
                         phone: profileData.phone || '',
                         city: profileData.city || '',
                         tagline: profileData.tagline || '',
                         bio: profileData.bio || '',
-                        profile_image_name: extractedName,
-                        profile_image_ext: extractedExt
+                        profile_image_url: imagePath
                     });
 
                     setCurrentRole(profileData.role || 'client');
@@ -126,10 +111,7 @@ const ProfileEdit = () => {
             }
         }
 
-        const cleanExt = formData.profile_image_ext.replace('.', '').trim() || 'jpg';
-        const finalImageString = formData.profile_image_name.trim()
-            ? `${formData.profile_image_name.trim()}.${cleanExt}`
-            : '';
+        const finalImageString = formData.profile_image_url || '';
 
         const payload = {
             name: formData.name,
@@ -197,27 +179,15 @@ const ProfileEdit = () => {
 
                 <div className="form-input-group-row">
                     <label><FiImage className="label-icon" /> Profile Image Asset</label>
-                    <div className="split-image-input-container">
-                        <div className="split-input-main-name">
-                            <span className="split-input-helper-text">File Name Only</span>
-                            <input
-                                type="text"
-                                value={formData.profile_image_name}
-                                onChange={(e) => setFormData({ ...formData, profile_image_name: e.target.value })}
-                                placeholder="e.g., my_profile_pic"
-                            />
-                        </div>
-
-                        <div className="split-input-extension">
-                            <span className="split-input-helper-text">Extension</span>
-                            <input
-                                type="text"
-                                value={formData.profile_image_ext}
-                                onChange={(e) => setFormData({ ...formData, profile_image_ext: e.target.value })}
-                                placeholder="jpg"
-                            />
-                        </div>
-                    </div>
+                    <MediaUploader
+                        value={formData.profile_image_url}
+                        mediaType="image"
+                        folder="profiles"
+                        accept="image/*"
+                        buttonText="Choose Image"
+                        onUploaded={(uploaded) => setFormData(prev => ({ ...prev, profile_image_url: uploaded.url }))}
+                        onUploadingChange={setImageUploading}
+                    />
                 </div>
 
                 {/* --- UPGRADE CTA FOR CLIENTS --- */}
@@ -289,7 +259,7 @@ const ProfileEdit = () => {
                     <button type="button" onClick={() => setShowCancelModal(true)} className="btn-cancel-edit-form" disabled={saving}>
                         <FiX /> Cancel
                     </button>
-                    <button type="submit" className="btn-save-profile-form" disabled={saving}>
+                    <button type="submit" className="btn-save-profile-form" disabled={saving || imageUploading}>
                         <FiCheck /> {saving ? 'Saving...' : 'Save Changes'}
                     </button>
                 </div>

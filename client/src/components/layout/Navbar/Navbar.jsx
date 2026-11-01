@@ -8,8 +8,8 @@ import Logo from '../../UI/logo.jsx';
 import Modal from '../../UI/Modal/Modal.jsx';
 
 import './Navbar.css';
+import { getMediaUrl } from '../../../utils/media';
 
-const BACKEND_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ const Navbar = () => {
               {/* <div onClick={handleProfileNavigation}  className="user-profile-card" title="Go to Profile"> */}
               <div onClick={() => navigate(`/profile/${user.id}`)} className="user-profile-card" title="Go to Profile">
                 {user.profile_image_url ? (
-                  <img src={`${BACKEND_URL}${user.profile_image_url}`} alt={user.name} className="navbar-avatar" />
+                  <img src={getMediaUrl(user.profile_image_url)} alt={user.name} className="navbar-avatar" />
                 ) : (
                   <FiUser size={18} className="default-avatar-icon" />
                 )}

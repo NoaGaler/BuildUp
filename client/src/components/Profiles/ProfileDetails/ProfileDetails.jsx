@@ -4,8 +4,8 @@ import { FiEdit2, FiPhone, FiMail, FiUser, FiStar } from 'react-icons/fi';
 
 import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 import './ProfileDetails.css';
+import { getMediaUrl } from '../../../utils/media';
 
-const BACKEND_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
 const ProfileDetails = ({ profile, isOwnProfile }) => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ProfileDetails = ({ profile, isOwnProfile }) => {
         <aside className="profile-sidebar-card">
             <div className="profile-avatar-container">
                 {profile.profile_image_url ? (
-                    <img src={`${BACKEND_URL}${profile.profile_image_url}`} alt={profile.name} className="profile-avatar-img" />
+                    <img src={getMediaUrl(profile.profile_image_url)} alt={profile.name} className="profile-avatar-img" />
                 ) : (
                     <FiUser size={36} className="default-avatar-icon" />
                 )}

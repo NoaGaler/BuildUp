@@ -61,7 +61,7 @@ class ProfileController {
             const payloadData = { ...req.body };
 
             if (payloadData.profile_image_url) {
-                if (!payloadData.profile_image_url.startsWith('/uploads/profiles/')) {
+                if (!payloadData.profile_image_url.startsWith('/uploads/profiles/') && !/^https?:\/\//.test(payloadData.profile_image_url)) {
                     payloadData.profile_image_url = `/uploads/profiles/${payloadData.profile_image_url}`;
                 }
             }
