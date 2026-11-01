@@ -5,7 +5,7 @@ A full-stack web application connecting homeowners with renovation and interior 
 
 **Tech Stack:** React · Vite · Node.js · Express · MySQL
 
-[Live Demo](https://build-up-ra99.vercel.app/) · [GitHub Repository](https://github.com/NoaGaler/BuildUp)
+[Live Demo](https://buildup-community.vercel.app/) · [GitHub Repository](https://github.com/NoaGaler/BuildUp)
 
 ---
 
