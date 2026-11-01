@@ -13,6 +13,7 @@ import CommentList from '../Comments/CommentList/CommentList.jsx';
 import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 import Modal from '../../UI/Modal/Modal.jsx';
 import './ProjectDetails.css';
+import { getMediaUrl } from '../../../utils/media';
 
 const ProjectDetails = () => {
     const { id } = useParams();
@@ -33,7 +34,6 @@ const ProjectDetails = () => {
     const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
     const [showComments, setShowComments] = useState(false);
 
-    const SERVER_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
     useEffect(() => {
         const fetchCompleteDetails = async () => {
@@ -117,7 +117,7 @@ const ProjectDetails = () => {
         }
     };
 
-    const finalAvatarImg = professional_image ? `${SERVER_URL}${professional_image}` : null;
+    const finalAvatarImg = professional_image ? getMediaUrl(professional_image) : null;
     const favorited = isProjectFavorited(Number(id));
 
     return (
@@ -136,17 +136,17 @@ const ProjectDetails = () => {
                     {mediaFiles.length > 0 && activeMedia ? (
                         <div className="carousel-view-slider-wrapper">
                             {activeMedia.media_type === 'image' && (
-                                <img src={`${SERVER_URL}${activeMedia.media_url}`} alt={title} className="hero-display-fluid-img" />
+                                <img src={getMediaUrl(activeMedia.media_url)} alt={title} className="hero-display-fluid-img" />
                             )}
 
                             {activeMedia.media_type === 'video' && (
-                                <video src={`${SERVER_URL}${activeMedia.media_url}`} controls className="hero-display-fluid-video" />
+                                <video src={getMediaUrl(activeMedia.media_url)} controls className="hero-display-fluid-video" />
                             )}
 
                             {activeMedia.media_type === 'audio' && (
                                 <div className="hero-display-audio-fallback-container">
                                     <FiVolume2 className="fallback-audio-giant-icon" />
-                                    <audio controls src={`${SERVER_URL}${activeMedia.media_url}`} className="html5-audio-element-track" />
+                                    <audio controls src={getMediaUrl(activeMedia.media_url)} className="html5-audio-element-track" />
                                 </div>
                             )}
 

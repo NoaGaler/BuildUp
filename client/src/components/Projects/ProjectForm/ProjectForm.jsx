@@ -7,6 +7,7 @@ import { useAuth } from '../../../context/authContext';
 
 import CategoryCard from '../../UI/CategoryCard/CategoryCard';
 import Modal from '../../UI/Modal/Modal';
+import MediaUploader from '../../UI/MediaUploader/MediaUploader';
 import './ProjectForm.css';
 
 const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
@@ -15,7 +16,8 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
     const { user } = useAuth();
 
     const isEditMode = !!initialValues;
-    const preparedMediaItems = initialValues?.mediaItems || [{ url: '', ext: 'png' }];
+    const emptyMediaItem = () => ({ id: null, media_url: '', media_type: 'image', mimetype: '' });
+    const preparedMediaItems = initialValues?.mediaItems || [emptyMediaItem()];
 
     // Controlled Form State Declarations
     const [title, setTitle] = useState(initialValues?.title || '');
@@ -33,23 +35,26 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
     const [isSecondaryDirty, setIsSecondaryDirty] = useState(false);
     const [submissionError, setSubmissionError] = useState(null);
     const [formLoading, setFormLoading] = useState(false);
+    const [uploadingCount, setUploadingCount] = useState(0);
 
     // Core Interaction Confirmation Modals Active States Layout Flags
     const [showSaveModal, setShowSaveModal] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
 
-    const analyzeMediaType = (ext) => {
-        const cleanExt = ext.toLowerCase().trim();
-        if (['png', 'jpeg', 'jpg', 'webp'].includes(cleanExt)) return 'image';
-        if (['mp4', 'mov', 'webm'].includes(cleanExt)) return 'video';
-        if (['mp3', 'wav'].includes(cleanExt)) return 'audio';
-        return 'image';
-    };
-
-    const handleMediaFieldChange = (index, field, value) => {
-        setMediaItems(prev => prev.map((item, i) => i === index ? { ...item, [field]: value } : item));
+    // Store the details of a file that finished uploading to cloud storage
+    const handleMediaUploaded = (index, uploaded) => {
+        setMediaItems(prev => prev.map((item, i) => i === index ? {
+            ...item,
+            media_url: uploaded.url,
+            media_type: uploaded.media_type,
+            mimetype: uploaded.mimetype
+        } : item));
         if (index === 0) setIsCoverDirty(true);
         else setIsSecondaryDirty(true);
+    };
+
+    const handleUploadingChange = (busy) => {
+        setUploadingCount(prev => Math.max(0, prev + (busy ? 1 : -1)));
     };
 
     // Toggles category selection state. Selecting a different card overrides the previous state[cite: 1]
@@ -66,8 +71,18 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
             return;
         }
 
-        if (analyzeMediaType(mediaItems[0].ext) !== 'image') {
-            setSubmissionError("UI Validation Exception: Index 0 file asset row must represent an image extension type.");
+        if (uploadingCount > 0) {
+            setSubmissionError("Please wait until all files finish uploading.");
+            return;
+        }
+
+        if (!mediaItems[0].media_url) {
+            setSubmissionError("Please upload a cover image for the project.");
+            return;
+        }
+
+        if (mediaItems[0].media_type !== 'image') {
+            setSubmissionError("The first file (cover) must be an image.");
             return;
         }
 
@@ -79,21 +94,14 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
         setFormLoading(true);
 
         const processedMediaArray = mediaItems
-            .filter(m => m.url && m.url.trim() !== '')
-            .map(m => {
-                const targetType = analyzeMediaType(m.ext);
-                let embeddedFolder = '/uploads/projects/images/';
-                if (targetType === 'video') embeddedFolder = '/uploads/projects/videos/';
-                if (targetType === 'audio') embeddedFolder = '/uploads/projects/audio/';
-
-                return {
-                    id: m.id || null,
-                    ext: m.ext,
-                    media_type: targetType,
-                    media_url: `${embeddedFolder}${m.url.trim()}.${m.ext.trim().toLowerCase()}`,
-                    originalName: `${m.url.trim()}.${m.ext.trim().toLowerCase()}`
-                };
-            });
+            .filter(m => m.media_url)
+            .map(m => ({
+                id: m.id || null,
+                media_type: m.media_type,
+                media_url: m.media_url,
+                mimetype: m.mimetype || `${m.media_type}/*`,
+                originalName: m.media_url.substring(m.media_url.lastIndexOf('/') + 1)
+            }));
 
         const errorFeedback = await onSubmitAction(
             { title, description, category_id: categoryId },
@@ -159,19 +167,22 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                     <h3 className="media-panel-section-title">Compiled Project Media Stack</h3>
                     <div className="media-fields-vertical-stack">
                         {mediaItems.map((item, index) => {
-                            const activeType = analyzeMediaType(item.ext);
+                            const activeType = item.media_type || 'image';
                             return (
                                 <div key={index} className={`media-input-row-card ${index === 0 ? 'primary-cover-slot' : ''}`}>
                                     <div className="row-badge-indicator">Slot {index + 1} {index === 0 && "(Primary Cover Image)"}</div>
                                     <div className="row-inputs-grid-layout">
-                                        <label className="grid-input-cell flex-grow-three">
-                                            <span>File Name Only</span>
-                                            <input type="text" value={item.url} onChange={(e) => handleMediaFieldChange(index, 'url', e.target.value)} placeholder="e.g., penthouse_view_1" required />
-                                        </label>
-                                        <label className="grid-input-cell">
-                                            <span>Extension</span>
-                                            <input type="text" value={item.ext} onChange={(e) => handleMediaFieldChange(index, 'ext', e.target.value)} placeholder="png" required />
-                                        </label>
+                                        <div className="grid-input-cell flex-grow-three">
+                                            <span>{index === 0 ? "Cover Image" : "Image, Video or Audio File"}</span>
+                                            <MediaUploader
+                                                value={item.media_url}
+                                                mediaType={activeType}
+                                                folder="projects"
+                                                accept={index === 0 ? 'image/*' : 'image/*,video/*,audio/*'}
+                                                onUploaded={(uploaded) => handleMediaUploaded(index, uploaded)}
+                                                onUploadingChange={handleUploadingChange}
+                                            />
+                                        </div>
                                         <div className="grid-input-cell analyzer-preview-badge">
                                             <span>Type</span>
                                             <div className={`type-badge-preview-tag ${activeType}`}>{activeType}</div>
@@ -186,7 +197,7 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                             );
                         })}
                     </div>
-                    <button type="button" className="btn-add-media-element-action" onClick={() => setMediaItems(prev => [...prev, { url: '', ext: 'png' }])}>
+                    <button type="button" className="btn-add-media-element-action" onClick={() => setMediaItems(prev => [...prev, emptyMediaItem()])}>
                         <FiPlus /> Append Specification File Asset
                     </button>
                 </div>
@@ -196,7 +207,7 @@ const ProjectForm = ({ initialValues = null, onSubmitAction }) => {
                         <FiXCircle /> Cancel & Discard
                     </button>
 
-                    <button type="submit" className="btn-form-action-trigger save-sage-modifier" disabled={formLoading}>
+                    <button type="submit" className="btn-form-action-trigger save-sage-modifier" disabled={formLoading || uploadingCount > 0}>
                         <FiSave /> {formLoading ? "Saving Changes..." : "Save Specifications"}
                     </button>
                 </div>

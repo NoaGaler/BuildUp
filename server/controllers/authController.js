@@ -38,7 +38,7 @@ class AuthController {
 
             // Preparing the data for sending to the model
             let finalProfileImageUrl = profile_image_url || null;
-            if (finalProfileImageUrl && !finalProfileImageUrl.startsWith('/uploads/')) {
+            if (finalProfileImageUrl && !finalProfileImageUrl.startsWith('/uploads/') && !/^https?:\/\//.test(finalProfileImageUrl)) {
                 finalProfileImageUrl = `/uploads/profiles/${finalProfileImageUrl}`;
             }
 

@@ -8,8 +8,8 @@ import Modal from '../../UI/Modal/Modal.jsx';
 import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 
 import './JobDetails.css';
+import { getMediaUrl } from '../../../utils/media';
 
-const SERVER_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
 const JobDetails = ({ onClose }) => {
     const navigate = useNavigate();
@@ -59,7 +59,7 @@ const JobDetails = ({ onClose }) => {
     }
 
     const { client_id, client_role, title, description, budget, category_name, client_name, client_image, client_email, client_phone } = job;
-    const finalAvatarImg = client_image ? `${SERVER_URL}${client_image}` : null;
+    const finalAvatarImg = client_image ? getMediaUrl(client_image) : null;
 
     const isMyJob = user?.id && Number(client_id) === Number(user.id);
     const isAdmin = user?.role === 'admin';

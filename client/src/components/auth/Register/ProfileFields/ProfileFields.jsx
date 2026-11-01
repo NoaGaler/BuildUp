@@ -4,6 +4,7 @@ import { FiUser, FiPhone, FiImage, FiMapPin, FiAlignLeft, FiType } from 'react-i
 
 import { useAuth } from '../../../../context/authContext.jsx';
 import CategoryList from '../../../UI/CategoryList/CategoryList.jsx';
+import MediaUploader from '../../../UI/MediaUploader/MediaUploader.jsx';
 
 import './ProfileFields.css';
 
@@ -12,6 +13,7 @@ const ProfileFields = () => {
     const navigate = useNavigate();
     const [localError, setLocalError] = useState('');
     const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
+    const [imageUploading, setImageUploading] = useState(false);
 
     // Form inputs baseline configuration for Onboarding step 2
     const [formData, setFormData] = useState({
@@ -52,6 +54,11 @@ const ProfileFields = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLocalError('');
+
+        if (imageUploading) {
+            setLocalError('Please wait until the profile image finishes uploading.');
+            return;
+        }
 
         if (!formData.name.trim()) {
             setLocalError('Full name or business name is required.');
@@ -135,20 +142,18 @@ const ProfileFields = () => {
                         </div>
                     </div>
 
-                    {/* Profile Image URL Input */}
+                    {/* Profile Image Upload */}
                     <div className="input-group-left">
-                        <label className="input-label">Profile Image URL</label>
-                        <div className="input-wrapper">
-                            <FiImage className="input-icon-left" />
-                            <input
-                                type="text"
-                                name="profileImage"
-                                value={formData.profileImage}
-                                onChange={handleChange}
-                                className="auth-input-left"
-                                placeholder="image.jpg"
-                            />
-                        </div>
+                        <label className="input-label"><FiImage /> Profile Image</label>
+                        <MediaUploader
+                            value={formData.profileImage}
+                            mediaType="image"
+                            folder="profiles"
+                            accept="image/*"
+                            buttonText="Choose Image"
+                            onUploaded={(uploaded) => setFormData(prev => ({ ...prev, profileImage: uploaded.url }))}
+                            onUploadingChange={setImageUploading}
+                        />
                     </div>
 
                     {/* Specialty Categories Selection Section */}
@@ -251,7 +256,7 @@ const ProfileFields = () => {
                         </div>
                     )}
 
-                    <button type="submit" className="auth-button-full">Complete Registration</button>
+                    <button type="submit" className="auth-button-full" disabled={imageUploading}>Complete Registration</button>
                 </form>
             </div>
         </div>

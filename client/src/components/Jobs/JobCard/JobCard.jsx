@@ -6,14 +6,14 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 import { useJobs } from '../../../context/JobContext';
 import CategoryCard from '../../UI/CategoryCard/CategoryCard.jsx';
 import './JobCard.css';
+import { getMediaUrl } from '../../../utils/media';
 
-const SERVER_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
 const JobCard = ({ id, client_id, category_id, title, budget, category_name, client_name, client_image, created_at, isActive, onRefresh }, ShowManagement) => {
     const navigate = useNavigate();
     const { id: currentUrlId } = useParams();
 
-    const finalAvatarImg = client_image ? `${SERVER_URL}${client_image}` : null;
+    const finalAvatarImg = client_image ? getMediaUrl(client_image) : null;
 
     const handleCardClick = (e) => {
         e.stopPropagation();

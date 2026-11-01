@@ -4,15 +4,15 @@ import { FiExternalLink, FiUser } from 'react-icons/fi';
 
 import CategoryCard from '../../UI/CategoryCard/CategoryCard';
 import './ProjectCard.css';
+import { getMediaUrl } from '../../../utils/media';
 
-const SERVER_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
 const ProjectCard = ({ id, title, cover_image_url, professional_id, professional_name, professional_image, professional_tagline, category_id }) => {
     const navigate = useNavigate();
 
     // Compiling the image asset paths dynamically with strict safe fallbacks
-    const finalCoverImg = cover_image_url ? `${SERVER_URL}${cover_image_url}` : '/assets/placeholder-cover.png';
-    const finalAvatarImg = professional_image ? `${SERVER_URL}${professional_image}` : null;
+    const finalCoverImg = cover_image_url ? getMediaUrl(cover_image_url) : '/assets/placeholder-cover.png';
+    const finalAvatarImg = professional_image ? getMediaUrl(professional_image) : null;
 
     return (
         <div className="project-feed-card"  onClick={() => navigate(`/projects/${id}`)}>
