@@ -9,7 +9,7 @@ import { useAuth } from '../../../context/authContext';
 
 import './ProfessionalCard.css';
 
-const BACKEND_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
+const BACKEND_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
 const ProfessionalCard = ({ professional }) => {
     const navigate = useNavigate();
