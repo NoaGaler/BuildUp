@@ -33,7 +33,7 @@ const ProjectDetails = () => {
     const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
     const [showComments, setShowComments] = useState(false);
 
-    const SERVER_URL = '[https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io](https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io)';
+    const SERVER_URL = 'https://app-d4e09bdc-bc2d-426d-90c4-78f353c66442.cleverapps.io';
 
     useEffect(() => {
         const fetchCompleteDetails = async () => {
